@@ -1,0 +1,266 @@
+[gd_scene load_steps=7 format=3 uid="uid://b4sjlimflax5"]
+
+[ext_resource type="Theme" uid="uid://bmaxqtcr7qr86" path="res://scenes/menu/theme.tres" id="1_bw3ll"]
+[ext_resource type="Script" path="res://scenes/menu/menu.gd" id="2_qgfn3"]
+[ext_resource type="Script" path="res://addons/nmkr/nmkr.gd" id="3_8lhhq"]
+[ext_resource type="Texture2D" uid="uid://df1td8t3abw47" path="res://scenes/menu/images/yasg_background.png" id="4_omvnl"]
+[ext_resource type="PackedScene" uid="uid://cbgl2p3wj4180" path="res://scenes/menu/asset_box.tscn" id="5_wad4v"]
+[ext_resource type="FontFile" uid="uid://c6b2xtig7pet5" path="res://assets/fonts/pixlkrud.ttf" id="6_20dmy"]
+
+[node name="Menu" type="Control" node_paths=PackedStringArray("asset_box")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_bw3ll")
+script = ExtResource("2_qgfn3")
+policy_ids = PackedStringArray("279c909f348e533da5808898f87f9a14bb2c3dfbbacccd631d927a3f", "17ac801d2ce81747e038d69bc0ccc861dcaad0d10750df4a3897b66d")
+asset_box = NodePath("AssetBox")
+title_distance = 1024.0
+
+[node name="NMKR" type="Node" parent="."]
+script = ExtResource("3_8lhhq")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_omvnl")
+expand_mode = 1
+
+[node name="LabelTitle" type="Label" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 16.0
+offset_bottom = 151.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("6_20dmy")
+theme_override_font_sizes/font_size = 128
+text = "YASG"
+horizontal_alignment = 1
+
+[node name="AssetBox" parent="." instance=ExtResource("5_wad4v")]
+layout_mode = 2
+offset_left = 797.0
+offset_right = 960.0
+offset_bottom = 540.0
+
+[node name="VBoxContainerWallet" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 1
+offset_left = 7.0
+offset_right = 247.0
+offset_bottom = 56.0
+theme_override_constants/separation = 8
+
+[node name="ControlTop" type="Control" parent="VBoxContainerWallet"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="LabelWallet" type="Label" parent="VBoxContainerWallet"]
+layout_mode = 2
+text = "NO WALLET :("
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -151.0
+offset_right = 189.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+alignment = 2
+
+[node name="ButtonSettings" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+shortcut_feedback = false
+shortcut_in_tooltip = false
+text = "SETTINGS
+"
+
+[node name="ButtonVerify" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "VERIFY WALLET"
+
+[node name="ControlQuit" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+
+[node name="ButtonQuit" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "QUIT"
+
+[node name="ControlEnd" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+
+[node name="PanelConfirm" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -384.0
+offset_top = -256.0
+offset_right = 384.0
+offset_bottom = 256.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelConfirm"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 32
+
+[node name="ControlBegin" type="Control" parent="PanelConfirm/VBoxContainer"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+
+[node name="LabelTitle" type="Label" parent="PanelConfirm/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("6_20dmy")
+theme_override_font_sizes/font_size = 64
+text = "ARE YOU SURE?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ControlMiddle" type="Control" parent="PanelConfirm/VBoxContainer"]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelConfirm/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 64
+alignment = 1
+
+[node name="ButtonYes" type="Button" parent="PanelConfirm/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "YES, PLEASE
+"
+
+[node name="ButtonNo" type="Button" parent="PanelConfirm/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "NO, THANKS"
+
+[node name="PanelVerify" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -384.0
+offset_top = -256.0
+offset_right = 384.0
+offset_bottom = 256.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelVerify"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(0.5, 0.5)
+alignment = 1
+
+[node name="LabelTitle" type="Label" parent="PanelVerify/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "SEND THIS EXACT AMOUNT OF ADA
+TO THE FOLLOWING ADDRESS:"
+horizontal_alignment = 1
+
+[node name="ControlAmount" type="Control" parent="PanelVerify/VBoxContainer"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="LabelAmount" type="Label" parent="PanelVerify/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "PLEASE WAIT..."
+horizontal_alignment = 1
+
+[node name="ControlAddress" type="Control" parent="PanelVerify/VBoxContainer"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="HBoxContainerAddress" type="HBoxContainer" parent="PanelVerify/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="ButtonAddress" type="Button" parent="PanelVerify/VBoxContainer/HBoxContainerAddress"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "PLEASE WAIT..."
+
+[node name="LabelAddress" type="Label" parent="PanelVerify/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "(CLICK THE ADDRESS TO COPY)"
+horizontal_alignment = 1
+
+[node name="ControlMessage" type="Control" parent="PanelVerify/VBoxContainer"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+
+[node name="LabelMessage" type="Label" parent="PanelVerify/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "Please be patient:
+The operation may require a few minutes...
+This window will close itself once completed."
+horizontal_alignment = 1
+uppercase = true
+
+[node name="ControlCancel" type="Control" parent="PanelVerify/VBoxContainer"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelVerify/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="ButtonCancel" type="Button" parent="PanelVerify/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "CANCEL"
+
+[node name="ControlCancel" type="Control" parent="PanelVerify/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[connection signal="pressed" from="VBoxContainer/ButtonVerify" to="." method="_on_button_verify_pressed"]
+[connection signal="pressed" from="VBoxContainer/ButtonQuit" to="." method="_on_button_quit_pressed"]
+[connection signal="pressed" from="PanelConfirm/VBoxContainer/HBoxContainer/ButtonYes" to="." method="_on_button_yes_pressed"]
+[connection signal="pressed" from="PanelConfirm/VBoxContainer/HBoxContainer/ButtonNo" to="." method="_on_button_no_pressed"]
+[connection signal="pressed" from="PanelVerify/VBoxContainer/HBoxContainerAddress/ButtonAddress" to="." method="_on_button_address_pressed"]
+[connection signal="pressed" from="PanelVerify/VBoxContainer/HBoxContainer/ButtonCancel" to="." method="_on_button_cancel_pressed"]

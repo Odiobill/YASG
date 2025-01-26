@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://cs2xi0j22ceuf"]
+
+[ext_resource type="Script" path="res://scenes/agents/crab/crab.gd" id="1_4w8kw"]
+[ext_resource type="Texture2D" uid="uid://dnga2afddocs" path="res://scenes/agents/crab/crab.png" id="2_wb3nn"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_knaha"]
+radius = 22.0
+
+[node name="Crab" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 13
+script = ExtResource("1_4w8kw")
+donut_position = Vector2(480, 270)
+donut_inner_radius = 16.0
+donut_outer_radius = 240.0
+hunt_chance = 0.3
+hunt_retries = 10
+hunt_range = 768.0
+eat_amount = 1.0
+focus_radius = 768.0
+max_speed = 500.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_wb3nn")
+hframes = 4
+
+[node name="Sprite2DPrey" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_wb3nn")
+hframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_knaha")

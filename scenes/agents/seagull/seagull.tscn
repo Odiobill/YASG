@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://h6sqy6mxp4bs"]
+
+[ext_resource type="Script" path="res://scenes/agents/seagull/seagull.gd" id="1_4y60v"]
+[ext_resource type="Texture2D" uid="uid://bd71hgf6cxs02" path="res://scenes/agents/seagull/seagull.png" id="2_k1vjk"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_v00bq"]
+radius = 16.0
+
+[node name="Seagull" type="CharacterBody2D"]
+collision_layer = 8
+collision_mask = 29
+script = ExtResource("1_4y60v")
+consumable_land_distance = 512.0
+origin_position = Vector2(480, 270)
+constrain_radius = 1024.0
+eat_amount = 5.0
+eat_until = 0.35
+focus_radius = 1024.0
+max_speed = 700.0
+metadata/crab_fears = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.5708
+texture = ExtResource("2_k1vjk")
+hframes = 4
+vframes = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_v00bq")

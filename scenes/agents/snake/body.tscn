@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://dmu2s2gvh8rah"]
+
+[ext_resource type="Script" path="res://scenes/agents/snake/body.gd" id="1_fktpf"]
+[ext_resource type="Texture2D" uid="uid://di67asg6t88o4" path="res://scenes/agents/snake/images/body.png" id="2_kqebg"]
+[ext_resource type="Texture2D" uid="uid://dqnr6evjbkugj" path="res://scenes/agents/snake/images/stripe.png" id="3_gt8o6"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4h66u"]
+radius = 14.0
+height = 55.0
+
+[node name="Body" type="CharacterBody2D" node_paths=PackedStringArray("follower_target", "follower_line_to", "line")]
+collision_layer = 2
+collision_mask = 20
+script = ExtResource("1_fktpf")
+follower_target = NodePath("Target Marker2D")
+follower_line_to = NodePath("LineTo Marker2D")
+line = NodePath("Line2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(-32, 0)
+texture = ExtResource("2_kqebg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-31, 0)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_4h66u")
+
+[node name="Target Marker2D" type="Marker2D" parent="."]
+position = Vector2(-64, 0)
+
+[node name="LineTo Marker2D" type="Marker2D" parent="."]
+position = Vector2(-55, 0)
+
+[node name="Line2D" type="Line2D" parent="."]
+position = Vector2(-2, 0)
+points = PackedVector2Array(0, 0, 0, 0)
+width = 32.0
+texture = ExtResource("3_gt8o6")
+texture_mode = 1

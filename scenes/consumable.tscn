@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://dhc8j4axhseqi"]
+
+[ext_resource type="Script" path="res://scenes/consumable.gd" id="1_ow6p2"]
+[ext_resource type="Texture2D" uid="uid://b21uxhkr17bdc" path="res://scenes/agents/fish/fish.png" id="2_bdrik"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lwqt8"]
+radius = 32.0
+
+[node name="Consumable" type="Area2D"]
+collision_layer = 16
+collision_mask = 13
+script = ExtResource("1_ow6p2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 7)
+rotation = 1.5708
+shape = SubResource("CircleShape2D_lwqt8")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_bdrik")
+hframes = 4
+vframes = 2
+frame = 4
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

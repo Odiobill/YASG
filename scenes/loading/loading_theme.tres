@@ -1,0 +1,20 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://m81iai1qnub"]
+
+[ext_resource type="FontFile" uid="uid://bvxh1y87oiahj" path="res://assets/fonts/Pixeled.ttf" id="1_cmc68"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k3rfw"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+expand_margin_left = 8.0
+expand_margin_top = 8.0
+expand_margin_right = 8.0
+expand_margin_bottom = 8.0
+
+[resource]
+Button/fonts/font = ExtResource("1_cmc68")
+Label/fonts/font = ExtResource("1_cmc68")
+Panel/styles/panel = SubResource("StyleBoxFlat_k3rfw")

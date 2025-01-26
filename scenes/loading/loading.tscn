@@ -1,0 +1,139 @@
+[gd_scene load_steps=7 format=3 uid="uid://0xcwm5ddqo1t"]
+
+[ext_resource type="Theme" uid="uid://m81iai1qnub" path="res://scenes/loading/loading_theme.tres" id="1_1feui"]
+[ext_resource type="Script" path="res://scenes/loading/loading.gd" id="1_wcye5"]
+[ext_resource type="Script" path="res://addons/nmkr/nmkr.gd" id="1_x10m3"]
+[ext_resource type="FontFile" uid="uid://c6b2xtig7pet5" path="res://assets/fonts/pixlkrud.ttf" id="2_o5hsb"]
+[ext_resource type="PackedScene" uid="uid://b4sjlimflax5" path="res://scenes/menu/menu.tscn" id="3_j863b"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qivdw"]
+bg_color = Color(0.247059, 0.247059, 0.247059, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 4
+border_width_bottom = 4
+
+[node name="Loading" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_1feui")
+script = ExtResource("1_wcye5")
+next_scene = ExtResource("3_j863b")
+
+[node name="NMKR" type="Node" parent="."]
+script = ExtResource("1_x10m3")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 28
+
+[node name="ControlTop" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="LabelTitle" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_o5hsb")
+theme_override_font_sizes/font_size = 64
+text = "Yet Another Snake Game"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelProject" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "YASG is an open-source project, built as an example to showcase
+some of the features provided by the NMKR PLUGIN for GODOT."
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="ControlCenter" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="LabelDescription" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "To play this game, you need a Cardano wallet containing
+$SNEK, $VIPER, or a custom YASG NFT.
+Please consider minting one to support yasg!"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer"]
+layout_mode = 2
+split_offset = 480
+
+[node name="ButtonMint" type="Button" parent="VBoxContainer/HSplitContainer"]
+layout_mode = 2
+text = "Mint a YASG NFT"
+
+[node name="ButtonGame" type="Button" parent="VBoxContainer/HSplitContainer"]
+layout_mode = 2
+text = "Load Game"
+
+[node name="PanelMessage" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -240.0
+offset_right = 384.0
+offset_bottom = 176.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qivdw")
+
+[node name="Label" type="Label" parent="PanelMessage"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 64.0
+offset_top = 64.0
+offset_right = -64.0
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Example
+Text"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+uppercase = true
+
+[node name="Button" type="Button" parent="PanelMessage"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -80.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 80.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("2_o5hsb")
+theme_override_font_sizes/font_size = 52
+text = "X"
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="pressed" from="VBoxContainer/HSplitContainer/ButtonMint" to="." method="_on_button_mint_pressed"]
+[connection signal="pressed" from="VBoxContainer/HSplitContainer/ButtonGame" to="." method="_on_button_game_pressed"]
+[connection signal="pressed" from="PanelMessage/Button" to="." method="_on_panel_message_button_pressed"]

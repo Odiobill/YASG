@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ug2cgqqtfs3s"]
+
+[ext_resource type="Script" path="res://scenes/vfx_2d/vfx_2d.gd" id="1_27a5n"]
+
+[node name="Vfx2D" type="Sprite2D"]
+script = ExtResource("1_27a5n")

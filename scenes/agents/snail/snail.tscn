@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://06m1oafa5pe1"]
+
+[ext_resource type="Script" path="res://scenes/agents/snail/snail.gd" id="1_8dbl3"]
+[ext_resource type="Texture2D" uid="uid://1kbvivj60e5y" path="res://scenes/agents/snail/snail.png" id="2_sql2o"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8hyx2"]
+radius = 12.0
+height = 48.0
+
+[node name="Snail" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 17
+script = ExtResource("1_8dbl3")
+max_speed = 70.0
+rotation_speed = 20.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.5708
+texture = ExtResource("2_sql2o")
+hframes = 4
+vframes = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_8hyx2")

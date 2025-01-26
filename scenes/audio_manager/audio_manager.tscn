@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://dbu87tbffr3nb"]
+
+[ext_resource type="Script" path="res://scenes/audio_manager/audio_manager.gd" id="1_8g5pf"]
+[ext_resource type="AudioStream" uid="uid://bm3iq65vnumej" path="res://scenes/audio_manager/snakegame.mp3" id="2_bd8vj"]
+
+[node name="AudioManager" type="Node" node_paths=PackedStringArray("audio")]
+script = ExtResource("1_8g5pf")
+audio = [NodePath("MusicMenu")]
+
+[node name="MusicMenu" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_bd8vj")
+parameters/looping = true

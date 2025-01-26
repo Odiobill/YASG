@@ -1,0 +1,73 @@
+[gd_scene load_steps=10 format=3 uid="uid://mc1bll8wnocb"]
+
+[ext_resource type="Script" path="res://scenes/agents/snake/snake.gd" id="1_qonhb"]
+[ext_resource type="Script" path="res://scenes/agents/snake/head.gd" id="2_dm0bo"]
+[ext_resource type="Texture2D" uid="uid://ds8u1jwr02fqr" path="res://scenes/agents/snake/images/head.png" id="3_ipr5v"]
+[ext_resource type="Script" path="res://scenes/agents/snake/tail.gd" id="4_3bbe2"]
+[ext_resource type="PackedScene" uid="uid://dmu2s2gvh8rah" path="res://scenes/agents/snake/body.tscn" id="5_jv30t"]
+[ext_resource type="Texture2D" uid="uid://cp3ds2787ob8b" path="res://scenes/agents/snake/images/tail.png" id="6_n0dmw"]
+[ext_resource type="Texture2D" uid="uid://dqnr6evjbkugj" path="res://scenes/agents/snake/images/stripe.png" id="7_xpuuk"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_02bla"]
+radius = 15.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nnj7v"]
+radius = 11.0
+height = 50.0
+
+[node name="Snake" type="Node2D"]
+script = ExtResource("1_qonhb")
+grow_scale_add = Vector2(0.025, 0.025)
+
+[node name="Head" type="CharacterBody2D" parent="." node_paths=PackedStringArray("follower_target", "follower_line_to")]
+z_index = 1
+collision_mask = 4
+script = ExtResource("2_dm0bo")
+follower_target = NodePath("Target Marker2D")
+follower_line_to = NodePath("LineTo Marker2D")
+rotation_speed = 30.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Head"]
+texture = ExtResource("3_ipr5v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Head"]
+position = Vector2(12.5, 0)
+shape = SubResource("CircleShape2D_02bla")
+
+[node name="Target Marker2D" type="Marker2D" parent="Head"]
+position = Vector2(-32, 0)
+
+[node name="LineTo Marker2D" type="Marker2D" parent="Head"]
+position = Vector2(-10, 0)
+
+[node name="PartsContainer" type="Node2D" parent="."]
+
+[node name="Tail" type="CharacterBody2D" parent="PartsContainer" node_paths=PackedStringArray("target", "follower_target", "line")]
+z_index = 1
+position = Vector2(-30, 0)
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("4_3bbe2")
+body_scene = ExtResource("5_jv30t")
+target = NodePath("../../Head")
+follower_target = NodePath("Sprite2D")
+line = NodePath("Line2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="PartsContainer/Tail"]
+position = Vector2(-32, 0)
+texture = ExtResource("6_n0dmw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PartsContainer/Tail"]
+position = Vector2(-28, 0)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_nnj7v")
+
+[node name="Line2D" type="Line2D" parent="PartsContainer/Tail"]
+points = PackedVector2Array(-10, 0, 0, 0)
+width = 32.0
+texture = ExtResource("7_xpuuk")
+texture_mode = 1
+
+[node name="TimerProcess" type="Timer" parent="."]
+wait_time = 0.6
+autostart = true
