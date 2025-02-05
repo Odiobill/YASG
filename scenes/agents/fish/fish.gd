@@ -4,7 +4,6 @@ extends SteeringAgent
 @export var wander_circle_distance: float = 256.0
 @export var wander_circle_radius: float = 32.0
 @export var angle_change_range: float = 0.3
-@export var donut_position := Vector2.ZERO
 @export var donut_inner_radius: float = 0.0
 @export var donut_outer_radius: float = 0.0
 

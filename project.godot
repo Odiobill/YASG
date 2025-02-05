@@ -18,6 +18,10 @@ boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/show_image=false
 config/icon="res://icon.svg"
 
+[audio]
+
+general/default_playback_type.web=0
+
 [autoload]
 
 ConfigfileHandler="*res://singletons/configfile_handler.gd"
@@ -60,8 +64,9 @@ fire={
 
 [nmkr]
 
+config/global/base_url="https://studio-api.nmkr.io"
 config/global/api_keys=PackedStringArray()
-config/global/debug=true
+config/global/debug=false
 
 [physics]
 

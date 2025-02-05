@@ -16,12 +16,9 @@ enum State
 	FLEE,
 }
 
-#@export var consumable_scene: PackedScene
-#@export var consumable_offset := Vector2.ZERO
 @export var wander_circle_distance: float = 256.0
 @export var wander_circle_radius: float = 32.0
 @export var angle_change_range: float = 0.3
-@export var donut_position := Vector2.ZERO
 @export var donut_inner_radius: float = 0.0
 @export var donut_outer_radius: float = 0.0
 @export var scout_position_radius: float = 0.0
@@ -56,10 +53,6 @@ func _ready():
 	_to_state(State.IDLE)
 
 
-func receive_event(_what: int = 0, _data: Variant = null) -> void:
-	print(name + " got shot")
-
-
 func _get_steering() -> Vector2:
 	match _state:
 		State.IDLE:
@@ -70,7 +63,6 @@ func _get_steering() -> Vector2:
 				wander(wander_circle_distance, wander_circle_radius, angle_change_range) \
 				+ circle_constrain(donut_outer_radius, 3.0) \
 				+ circle_constrain(donut_inner_radius, 3.0, false)
-				#+ donut_constrain(3.0, donut_outer_radius, donut_position, donut_inner_radius)
 		
 		State.GOTO:
 			return (wander(
@@ -78,7 +70,6 @@ func _get_steering() -> Vector2:
 				wander_circle_radius,
 				angle_change_range
 			) + arrive_to(_goto_position, 48.0, 128.0) * 2) / 3
-			#return arrive_to(_goto_position, 48.0, 128.0)
 		
 		State.SCOUT:
 			return Vector2.ZERO
@@ -106,7 +97,6 @@ func _process_state(state: State, wait_time: float) -> void:
 			if not is_active:
 				if randf_range(0.0, 1.0) < hunt_chance:
 					# Go hunting
-					#_goto_position = get_position_at_radius(scout_position_radius, true)
 					_goto_position = global_position.normalized() * scout_position_radius
 					_goto_state = State.SCOUT
 					_to_state(State.GOTO)
@@ -126,11 +116,6 @@ func _process_state(state: State, wait_time: float) -> void:
 					global_rotation = Vector2.ZERO.angle_to(global_position)
 					_to_state(State.SCOUT)
 				elif _goto_state == State.EAT:
-					# Retrieved stuff
-					#consumable.monitorable = true
-					#consumable.monitoring = true
-					#consumable.reparent(get_parent())
-					#consumable = null
 					_to_state(State.EAT)
 				else:
 					_to_state(State.IDLE)
@@ -161,31 +146,16 @@ func _process_state(state: State, wait_time: float) -> void:
 				if _hunt_target.global_position.distance_to(global_position) < 50.0:
 					_to_state(State.RETRIEVE)
 				elif _hunt_elapsed_time > 30.0:
-					#_goto_position = get_position_at_radius(scout_position_radius, true)
 					_goto_position = global_position.normalized() * scout_position_radius
 					_goto_state = State.SCOUT
 					_to_state(State.GOTO)
 			else:
-				#_goto_position = get_position_at_radius(scout_position_radius, true)
 				_goto_position = global_position.normalized() * scout_position_radius
 				_goto_state = State.SCOUT
 				_to_state(State.GOTO)
 		
 		State.RETRIEVE:
 			if is_instance_valid(_hunt_target):
-				#consumable = consumable_scene.instantiate() as Consumable
-				#consumable.setup(
-					#_hunt_target.get_meta("consumable_value", 0.0),
-					#_hunt_target.get_meta("consumable_images", []),
-					#_hunt_target.sprite_2d.texture,
-					#_hunt_target.sprite_2d.hframes,
-					#_hunt_target.sprite_2d.vframes
-				#)
-				#for meta in _hunt_target.get_meta_list():
-					#consumable.set_meta(meta, _hunt_target.get_meta(meta))
-				#add_child(consumable)
-				#
-				
 				sprite_prey.texture = _hunt_target.sprite_2d.texture
 				sprite_prey.hframes = _hunt_target.sprite_2d.hframes
 				sprite_prey.vframes = _hunt_target.sprite_2d.vframes

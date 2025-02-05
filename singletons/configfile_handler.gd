@@ -19,6 +19,7 @@ func _ready() -> void:
 		_config.save(FILE_PATH)
 	
 	_config.load(FILE_PATH)
+	_defaults()
 	for section in _config.get_sections():
 		_cache[section] = _load_section(section)
 
@@ -55,8 +56,12 @@ func erase_section(section: String) -> void:
 
 func _defaults():
 	_config.set_value("project", "snake_nft_uid", "8709b7b6-9e50-456d-904f-4feab5d58f9c")
-	_config.set_value("audio", "music_volume", 1.0)
-	_config.set_value("audio", "sfx_volume", 1.0)
+	if not _config.has_section_key("audio", "volume_master"):
+		_config.set_value("audio", "volume_master", 1.0)
+	if not _config.has_section_key("audio", "volume_bgm"):
+		_config.set_value("audio", "volume_bgm", 1.0)
+	if not _config.has_section_key("audio", "volume_sfx"):
+		_config.set_value("audio", "volume_sfx", 1.0)
 
 
 func _load_section(section: String) -> Dictionary:

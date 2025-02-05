@@ -1,7 +1,9 @@
+class_name Snail
 extends SteeringAgent
 
 
 signal crashed(snail: SteeringAgent)
+signal sleeping(snail: Snail)
 
 
 enum State
@@ -13,8 +15,6 @@ enum State
 	DIE,
 }
 
-#const FRAME_HIDDEN := Vector2(9, 2)
-#const FRAME_DEATH := Vector2(4, 1)
 const FRAME_HIDDEN := Vector2(3, 2)
 const FRAME_DEATH := Vector2(3, 1)
 
@@ -28,40 +28,38 @@ var _frames_show: PackedVector2Array
 var _frames_move: PackedVector2Array
 var _frames_die: PackedVector2Array
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	super._ready()
 	
-	#if origin_position != Vector2.ZERO:
-		#global_position = origin_position
-	#
 	_frames_hide = []
-	#for x in 10:
 	for x in 4:
 		_frames_hide.append(Vector2(x, 2))
 	
 	_frames_show = []
-	#for x in 10:
 	for x in 4:
 		_frames_show.append(Vector2(x, 2))
 	_frames_show.reverse()
 	
 	_frames_move = []
-	#for x in 20:
 	for x in 4:
 		_frames_move.append(Vector2(x, 0))
 	
 	_frames_die = []
-	#for x in 5:
 	for x in 4:
 		_frames_die.append(Vector2(x, 1))
 	
 	_to_state(State.HIDDEN)
 
 
-func receive_event(_what: int = 0, _data: Variant = null) -> void:
-	if _state != State.DIE:
-		_to_state(State.HIDE)
+#func receive_event(_what: int = 0, _data: Variant = null) -> void:
+	#if _state != State.DIE:
+		#_to_state(State.HIDE)
+
+
+func die() -> void:
+	_to_state(State.DIE)
 
 
 func _to_state(state: State) -> void:
@@ -76,7 +74,7 @@ func _to_state(state: State) -> void:
 		
 		State.MOVE:
 			animation(_frames_move, 0.1, true)
-			activity(3.0)
+			activity(2.0)
 		
 		State.HIDE:
 			animation(_frames_hide, 0.1)
@@ -111,7 +109,8 @@ func _process_state(state: State, _wait_time: float) -> void:
 		State.HIDE:
 			if not is_active:
 				if global_position.distance_to(destination_point) < target_max_distance:
-					activity(60.0)
+					sleeping.emit(self)
+					activity(1.0)
 				else:
 					_to_state(State.HIDDEN)
 		
@@ -135,5 +134,5 @@ func _process_collisions(collisions: Array[KinematicCollision2D]) -> void:
 	for collision in collisions:
 		var collider = collision.get_collider()
 		if collider is SnakeHead:
-			_to_state(State.DIE)
+			die()
 			break

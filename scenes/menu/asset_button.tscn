@@ -1,16 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://dl7aoxqcdvj12"]
+[gd_scene load_steps=3 format=3 uid="uid://dl7aoxqcdvj12"]
 
 [ext_resource type="Script" path="res://scenes/menu/asset_button.gd" id="1_g86up"]
+[ext_resource type="PackedScene" uid="uid://dg2noqsa88rfi" path="res://scenes/game_controller.tscn" id="2_txtf3"]
 
 [node name="AssetButton" type="Button"]
 custom_minimum_size = Vector2(240, 64)
 offset_right = 240.0
 offset_bottom = 64.0
 theme_override_constants/outline_size = 7
-text = "CHANG"
+text = "NAME"
 flat = true
 alignment = 0
 script = ExtResource("1_g86up")
+game_scene = ExtResource("2_txtf3")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 custom_minimum_size = Vector2(60, 60)
@@ -27,19 +29,6 @@ grow_horizontal = 0
 grow_vertical = 2
 expand_mode = 2
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -20.0
-offset_top = -23.0
-offset_right = 20.0
-grow_horizontal = 2
-grow_vertical = 0
-horizontal_alignment = 1
-vertical_alignment = 2
-
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="pressed" from="." to="." method="_on_pressed"]

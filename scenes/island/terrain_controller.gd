@@ -2,9 +2,9 @@ class_name TerrainController
 extends Node2D
 
 
-signal lake_hitten(lake)
 signal food_spawned(food: Consumable)
 signal food_eaten(value: float)
+signal lake_completed
 signal level_completed(level: int)
 
 
@@ -35,7 +35,8 @@ var _lakes_container: Node2D
 var _lakes_completed: int
 var _spawn_timer: Timer
 @onready var vfx_2d: Vfx2D = $Vfx2D
-@onready var water_bar: TextureProgressBar = $TextureProgressBar
+#@onready var water_bar: TextureProgressBar = $TextureProgressBar
+@onready var water_bar: ProgressBar = $ProgressBar
 
 
 var level: int = 0:
@@ -57,8 +58,6 @@ func _ready() -> void:
 	_spawn_timer.one_shot = false
 	_spawn_timer.timeout.connect(_on_spawn_timer_timeout)
 	_spawn_timer.start(food_spawn_rate)
-	
-	lake_hitten.connect(_handle_lake_hitten)
 	
 	_lakes_container = Node2D.new()
 	_lakes_container.name = "Lakes"
@@ -125,8 +124,15 @@ func spawn_lake(coords: Vector2i, size: int = 0, max_level: int = -1, completed 
 	body.collision_layer = lake_layer
 	body.collision_mask = lake_mask
 	body.global_position = draw_lake(size, coords, completed)
-	body.set_meta("wall_receiver", self)
-	body.set_meta("wall_signal", "lake_hitten")
+	#body.set_meta("wall_receiver", self)
+	#body.set_meta("wall_signal", "lake_hitten")
+	var progress_bar := ProgressBar.new()
+	progress_bar.show_percentage = false
+	progress_bar.custom_minimum_size = water_bar.custom_minimum_size
+	progress_bar.theme = water_bar.theme
+	if completed:
+		progress_bar.visible = false
+	body.add_child(progress_bar)
 	_lakes_container.add_child(body)
 	
 	if completed:
@@ -139,10 +145,12 @@ func spawn_lake(coords: Vector2i, size: int = 0, max_level: int = -1, completed 
 		"coords": coords,
 		"level": 0,
 		"max_level": max_level,
+		"progress_bar": progress_bar,
 		"shape": shape,
 		"water": 0.0,
 	}
 	_lakes.append(lake)
+	update_water_bar(_lakes.size() - 1)
 	
 	return body.global_position
 
@@ -163,7 +171,6 @@ func spawn_food(min_radius: float = -1.0) -> void:
 	consumable.can_consume = false
 	consumable.expire_time = food_expire_time
 	consumable.catched.connect(_on_food_eaten)
-	#_spawn_timer.add_child(consumable)
 	add_child(consumable)
 	food_spawned.emit(consumable)
 
@@ -179,14 +186,16 @@ func draw_lake(size: int, coords: Vector2i, completed := false) -> Vector2:
 
 func upgrade_lake(i: int) -> void:
 	if not _lakes[i]["completed"]:
-		water_bar.visible = false
 		if _lakes[i]["level"] < _lakes[i]["max_level"]:
 			_lakes[i]["level"] += 1
 			_lakes[i]["shape"].radius = lake_sizes[_lakes[i]["level"]]
 			_lakes[i]["water"] = 0.0
+			update_water_bar(i)
 		else:
 			_lakes[i]["completed"] = true
+			_lakes[i]["progress_bar"].visible = false
 			_lakes_completed += 1
+			lake_completed.emit()
 			if _lakes_completed == levels[level].size():
 				level_completed.emit(level)
 		
@@ -194,7 +203,7 @@ func upgrade_lake(i: int) -> void:
 		vfx_2d.play()
 
 
-func lake_points(subject: Vector2, fill := true) -> float:
+func lake_points(subject: Vector2, fill: float = 0.0) -> float:
 	var points: float = 0.0
 	for i in range(_lakes.size()):
 		var distance := subject.distance_to(_lakes[i]["body"].global_position)
@@ -202,15 +211,15 @@ func lake_points(subject: Vector2, fill := true) -> float:
 		if distance < _lakes[i].shape.radius * 1.1:
 			if _lakes[i]["completed"]:
 				points += distance / _lakes[i].shape.radius
-			elif fill:
+			elif fill > 0.0:
 				var diff: float = distance / _lakes[i].shape.radius
 				points -= diff
-				_lakes[i]["water"] += diff
+				_lakes[i]["water"] += diff * fill
 				
 				if _lakes[i]["water"] > _lakes[i].shape.radius * water_per_size:
 					upgrade_lake(i)
 				else:
-					show_water_bar(i)
+					update_water_bar(i)
 	
 	return points
 
@@ -225,18 +234,12 @@ func distance_points(subject: Vector2) -> float:
 	return 0.0
 
 
-#func _on_lake_filled(lake: Lake) -> void:
-	#if not lake.is_completed:
-		#draw_lake(lake.level, _lakes[lake])
-
-
-func show_water_bar(i: int) -> void:
-	water_bar.visible = true
-	water_bar.max_value = lake_sizes[_lakes[i]["level"]] * water_per_size
-	water_bar.value = _lakes[i]["water"]
-	water_bar.global_position = _lakes[i].body.global_position
-	water_bar.global_position.y += lake_sizes[_lakes[i]["level"]] + 128
-	water_bar.global_position.x -=  water_bar.size.x / 2
+func update_water_bar(i: int) -> void:
+	_lakes[i]["progress_bar"].max_value = lake_sizes[_lakes[i]["level"]] * water_per_size
+	_lakes[i]["progress_bar"].value = _lakes[i]["water"]
+	_lakes[i]["progress_bar"].global_position = _lakes[i].body.global_position
+	_lakes[i]["progress_bar"].global_position.x -=  water_bar.size.x / 2
+	_lakes[i]["progress_bar"].global_position.y -=  water_bar.size.y / 2
 
 
 func switch_level(new_level: int, duration: float = 1.0) -> void:
@@ -246,8 +249,6 @@ func switch_level(new_level: int, duration: float = 1.0) -> void:
 		vfx_2d.global_position = spawn_lake(coords, 0, new_level)
 		vfx_2d.play()
 		await get_tree().create_timer(duration).timeout
-	
-	#can_spawn_food = true
 
 
 func get_position_at_radius(radius: float) -> Vector2:
@@ -256,17 +257,6 @@ func get_position_at_radius(radius: float) -> Vector2:
 	var y := radius * sin(angle)
 	
 	return Vector2(x, y)
-
-
-func _handle_lake_hitten(body) -> void:
-	for i in range(_lakes.size()):
-		if _lakes[i]["body"] == body:
-			_lakes[i]["water"] += hit_water
-			
-			if _lakes[i]["water"] > lake_sizes[_lakes[i]["level"]] * water_per_size:
-				upgrade_lake(i)
-			else:
-				show_water_bar(i)
 
 
 func _on_spawn_timer_timeout() -> void:

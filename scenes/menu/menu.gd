@@ -12,7 +12,14 @@ enum VerificationResult
 	FAILURE,
 }
 
+const HANDLE_P_ID := "f0ff48bbb7bbe9d59a40f1ce90e9e9d0ff5002ec48f232b49ca0fb9a"
 const ASSET_BUTTON := preload("res://scenes/menu/asset_button.tscn")
+
+@export var sprites: Array[Sprite2D]
+@export var animation_min_time: float = 3.0
+@export var animation_max_time: float = 10.0
+@export var animation_min_speed: float = 0.1
+@export var animation_max_speed: float = 0.2
 @export var verification_check_time: int = 7
 @export var policy_ids: PackedStringArray
 @export var asset_box: AssetBox
@@ -21,28 +28,51 @@ var _config_wallet := ""
 var _verification_address := ""
 var _verification_uid := ""
 var _verification_timer: Timer
-var _assets: Array = []
+#var _assets: Array = []
 var _asset_buttons: Array[AssetButton] = []
+var _animations: Array[Dictionary] = []
+var _volumeMaster: float
+var _volumeBgm: float
+var _volumeSfx: float
 @onready var nmkr: NMKR = $NMKR
 @onready var label_title: Label = $TextureRect/LabelTitle
 @onready var color_rect: ColorRect = $ColorRect
 @onready var panel_confirm: Panel = $PanelConfirm
+@onready var panel_settings: Panel = $PanelSettings
 @onready var panel_verify: Panel = $PanelVerify
+@onready var panel_click_shield: Panel = $PanelClickShield
+@onready var button_settings: Button = $VBoxContainer/ButtonSettings
+@onready var button_close_settings: Button = $PanelSettings/VBoxContainer/HBoxContainerSettings/ButtonCloseSettings
 @onready var button_verify: Button = $VBoxContainer/ButtonVerify
+@onready var button_quit: Button = $VBoxContainer/ButtonQuit
 @onready var button_address: Button = $PanelVerify/VBoxContainer/HBoxContainerAddress/ButtonAddress
+@onready var button_yes: Button = $PanelConfirm/VBoxContainer/HBoxContainer/ButtonYes
+@onready var button_no: Button = $PanelConfirm/VBoxContainer/HBoxContainer/ButtonNo
 @onready var label_amount: Label = $PanelVerify/VBoxContainer/LabelAmount
 @onready var label_address: Label = $PanelVerify/VBoxContainer/LabelAddress
 @onready var label_wallet: Label = $VBoxContainerWallet/LabelWallet
 @onready var container_wallet: VBoxContainer = $VBoxContainerWallet
+@onready var h_slider_master: HSlider = $PanelSettings/VBoxContainer/HBoxContainerSettings/HSliderMaster
+@onready var h_slider_music: HSlider = $PanelSettings/VBoxContainer/HBoxContainerSettings/HSliderMusic
+@onready var h_slider_effects: HSlider = $PanelSettings/VBoxContainer/HBoxContainerSettings/HSliderEffects
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	_volumeMaster = ConfigfileHandler.get_value("audio", "volume_master")
+	h_slider_master.value = _volumeMaster
+	_volumeBgm = ConfigfileHandler.get_value("audio", "volume_bgm")
+	h_slider_music.value = _volumeBgm
+	_volumeSfx = ConfigfileHandler.get_value("audio", "volume_sfx")
+	h_slider_effects.value = _volumeSfx
+	
 	color_rect.visible = true
 	color_rect.color = Color.BLACK
 	var label_position := label_title.position
 	label_title.position.y -= title_distance
+	panel_click_shield.visible = false
 	
+	AudioManager.bus_volume("bgm", 0.1)
 	_verification_timer = Timer.new()
 	_verification_timer.autostart = false
 	_verification_timer.one_shot = true
@@ -51,8 +81,16 @@ func _ready() -> void:
 
 	_update_verify_button()
 	
+	panel_settings.visible = false
 	panel_confirm.visible = false
 	panel_verify.visible = false
+	
+	for sprite: Sprite2D in sprites:
+		_animations.append({
+			"sprite": sprite,
+			"time_max": randf_range(animation_min_time, animation_max_time),
+			"time_elapsed": 0.0,
+		})
 	
 	var tween := get_tree().create_tween()
 	tween.set_ease(Tween.EASE_IN)
@@ -63,18 +101,29 @@ func _ready() -> void:
 	tween = get_tree().create_tween()
 	tween.set_ease(Tween.EASE_OUT)
 	tween.tween_property(label_title, "position", label_position, 1.0)
-	tween.finished.connect(func(): AudioManager.play("MusicMenu") )
+	tween.finished.connect(func(): AudioManager.audio("bgm_menu").play())
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta: float) -> void:
-	#pass
+func _process(delta: float) -> void:
+	for i in _animations.size():
+		_animations[i]["time_elapsed"] += delta
+		if _animations[i]["time_elapsed"] > _animations[i]["time_max"]:
+			_animations[i]["time_elapsed"] = 0.0
+			_animations[i]["time_max"] = randf_range(animation_min_time, animation_max_time)
+			
+			_animate(
+				_animations[i]["sprite"],
+				_animations[i]["sprite"].hframes * randf_range(animation_min_speed, animation_max_speed)
+			)
 
 
 func confirm() -> bool:
+	panel_click_shield.visible = true
 	panel_confirm.visible = true
 	var result: bool = await confirmed
 	
 	panel_confirm.visible = false
+	panel_click_shield.visible = false
 	return result
 
 
@@ -84,13 +133,18 @@ func get_snake_stats(asset: Dictionary) -> Dictionary:
 	if asset["policyId"] == asset_box.CHANG_P_ID:
 		stats["steering_angle"] = 0.5
 		stats["wander_drain"] = 0.5
-		stats["sprint_power"] = 0.5
-		stats["sprint_drain"] = 0.5
-		stats["shot_rate"] = 0.5
-		stats["shot_speed"] = 0.5
 		stats["shot_drain"] = 0.5
 		
 	return stats
+
+
+func _animate(sprite: Sprite2D, time: float) -> void:
+	var tween := get_tree().create_tween()
+	tween.set_ease(Tween.EASE_OUT_IN)
+	tween.tween_property(sprite, "frame", sprite.hframes - 1, time)
+	await get_tree().create_timer(time + time / sprite.hframes).timeout
+	
+	sprite.frame = 0
 
 
 func _update_verify_button() -> void:
@@ -111,20 +165,21 @@ func _update_wallet() -> void:
 			assetButton.queue_free()
 		_asset_buttons.clear()
 	
-	if _config_wallet.length() > 0: 
+	if _config_wallet.length() > 0:
 		label_wallet.text = "LOADING WALLET...\n\nPLEASE WAIT...\n"
 		
 		var foundChang := false
-		_assets = []
+		var foundHandle := ""
+		
+		#_assets = []
 		var assets := await nmkr.get_all_assets_in_wallet(_config_wallet)
-		print(assets.size())
-		var count: int = 0
 		for asset in assets:
-			count += 1
-			print(str(count) + " " + asset["assetName"])
-			#print("Found " + asset["policyId"])
-			if policy_ids.has(asset["policyId"]):
-				if asset["policyId"] not in [ asset_box.SNEK_P_ID, asset_box.CHANG_P_ID ]:
+			if asset["policyId"] == HANDLE_P_ID:
+				if foundHandle != "":
+					continue
+				foundHandle = "$" + asset["assetName"].to_upper().left(14)
+			elif policy_ids.has(asset["policyId"]):
+				if asset["policyId"] not in [ asset_box.SNEK_P_ID, asset_box.VIPER_P_ID, asset_box.CHANG_P_ID ]:
 					var metadata := await nmkr.get_metadata_for_token(asset["policyId"], asset["assetNameInHex"])
 					asset["metadata"] = metadata
 				elif asset["policyId"] == asset_box.CHANG_P_ID:
@@ -133,23 +188,23 @@ func _update_wallet() -> void:
 					foundChang = true
 				
 				asset["snake"] = get_snake_stats(asset)
-				_assets.append(asset)
+				#_assets.append(asset)
 				
 				var button := ASSET_BUTTON.instantiate() as AssetButton
 				button.asset = asset
-				button.asset_pressed.connect(_handle_asset_pressed)
+				button.asset_selected.connect(_handle_asset_selected)
 				_asset_buttons.append(button)
 				container_wallet.add_child(button)
 		
-		label_wallet.text = \
-			 _config_wallet.left(7) + \
+		label_wallet.text = foundHandle if foundHandle != "" else \
+			_config_wallet.left(7) + \
 			"......." + \
 			_config_wallet.right(7)
 	else:
 		label_wallet.text = "PLEASE VERIFY WALLET"
 
 
-func _handle_asset_pressed(asset: Dictionary) -> void:
+func _handle_asset_selected(asset: Dictionary) -> void:
 	asset_box.asset = asset
 
 
@@ -197,11 +252,22 @@ func _on_verification_timer_timeout() -> void:
 		verification_completed.emit(VerificationResult.FAILURE)
 
 
+func _on_button_quit_mouse_entered() -> void:
+	button_quit.grab_focus()
+
+
 func _on_button_quit_pressed() -> void:
 	var result := await confirm()
 	
 	if result:
-		get_tree().quit()
+		AudioManager.audio("bgm_menu").stop()
+		color_rect.visible = true
+		var tween := get_tree().create_tween()
+		tween.set_ease(Tween.EASE_IN)
+		tween.tween_property(color_rect, "color", Color.BLACK, 1.0)
+		tween.finished.connect(func():
+			get_tree().quit()
+		)
 	else:
 		print("Cancel")
 
@@ -220,6 +286,10 @@ func _on_button_cancel_pressed() -> void:
 	verification_completed.emit(VerificationResult.CANCEL)
 
 
+func _on_button_verify_mouse_entered() -> void:
+	button_verify.grab_focus()
+
+
 func _on_button_verify_pressed() -> void:
 	_handle_verify_button()
 
@@ -228,5 +298,48 @@ func _on_button_yes_pressed() -> void:
 	confirmed.emit(true)
 
 
+func _on_button_yes_mouse_entered() -> void:
+	button_yes.grab_focus()
+
+
+func _on_button_no_mouse_entered() -> void:
+	button_no.grab_focus()
+
+
 func _on_button_no_pressed() -> void:
 	confirmed.emit(false)
+
+
+func _on_button_settings_mouse_entered() -> void:
+	button_settings.grab_focus()
+
+
+func _on_button_settings_pressed() -> void:
+	panel_settings.visible = true
+
+
+func _on_h_slider_master_value_changed(value: float) -> void:
+	AudioManager.bus_volume("Master", value)
+	_volumeMaster = value
+
+
+func _on_h_slider_music_value_changed(value: float) -> void:
+	AudioManager.bus_volume("BGM", value)
+	_volumeBgm = value
+
+
+func _on_h_slider_effects_value_changed(value: float) -> void:
+	AudioManager.bus_volume("SFX", value)
+	_volumeSfx = value
+
+
+func _on_button_close_settings_mouse_entered() -> void:
+	button_close_settings.grab_focus()
+
+
+func _on_button_close_settings_pressed() -> void:
+	ConfigfileHandler.set_value("audio", "volume_master", _volumeMaster)
+	ConfigfileHandler.set_value("audio", "volume_bgm", _volumeBgm)
+	ConfigfileHandler.set_value("audio", "volume_sfx", _volumeSfx)
+	
+	panel_settings.visible = false

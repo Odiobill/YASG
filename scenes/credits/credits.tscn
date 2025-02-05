@@ -1,0 +1,317 @@
+[gd_scene load_steps=6 format=3 uid="uid://bejye1rd8hm5v"]
+
+[ext_resource type="Texture2D" uid="uid://cbgre4rn6tf80" path="res://scenes/credits/cardano.png" id="1_17oec"]
+[ext_resource type="Script" path="res://scenes/credits/credits.gd" id="1_boj64"]
+[ext_resource type="PackedScene" uid="uid://b4sjlimflax5" path="res://scenes/menu/menu.tscn" id="2_8ytja"]
+[ext_resource type="FontFile" uid="uid://ck6jhvbunueqq" path="res://assets/fonts/pixel_carnage_mono_code.ttf" id="2_anuts"]
+[ext_resource type="FontFile" uid="uid://cs82wdfrgho2y" path="res://assets/fonts/pixel_carnage_mono_code_tall.ttf" id="4_31xb5"]
+
+[node name="Credits" type="Control" node_paths=PackedStringArray("target_node")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_boj64")
+text = "YASG
+
+A small open source project to showcase some of the features provided by the NMKR Plugin for Godot.
+
+Design and Code
+Davide Lucchesi
+
+Graphics
+Rebecca Visentin
+
+Music and Sounds
+Konstantinos Ilias Ntounis"
+target_node = NodePath("VBoxContainer")
+border_offset = 100
+next_scene = ExtResource("2_8ytja")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_17oec")
+expand_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -983.5
+offset_bottom = 983.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="Label1" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.498039, 0.498039, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("4_31xb5")
+theme_override_font_sizes/font_size = 64
+text = "YASG
+"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.498039, 0.498039, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_anuts")
+theme_override_font_sizes/font_size = 42
+text = "(Yet Another Snake Game)
+"
+horizontal_alignment = 1
+
+[node name="Control1" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 256)
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(960, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.498039, 0.498039, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_anuts")
+theme_override_font_sizes/font_size = 48
+text = "Credits"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Control2" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(960, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.498039, 0.498039, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_anuts")
+theme_override_font_sizes/font_size = 42
+text = "Design and Code"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Label5" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(960, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.498039, 0.498039, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_anuts")
+theme_override_font_sizes/font_size = 32
+text = "Davide Lucchesi"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Control3" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="Label6" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(960, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.498039, 0.498039, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_anuts")
+theme_override_font_sizes/font_size = 42
+text = "Graphics"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Label7" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(960, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.498039, 0.498039, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_anuts")
+theme_override_font_sizes/font_size = 32
+text = "Rebecca Visentin"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Control4" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="Label8" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(960, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.498039, 0.498039, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_anuts")
+theme_override_font_sizes/font_size = 42
+text = "Music and Sound Effects"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Label9" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(960, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.498039, 0.498039, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_anuts")
+theme_override_font_sizes/font_size = 32
+text = "Konstantinos Ilias Ntounis"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Control5" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="Label10" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(960, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.498039, 0.498039, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_anuts")
+theme_override_font_sizes/font_size = 42
+text = "Special Thanks"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Label11" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(960, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.498039, 0.498039, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_anuts")
+theme_override_font_sizes/font_size = 32
+text = "Hara Iliopoulou"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Label12" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(960, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.498039, 0.498039, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_anuts")
+theme_override_font_sizes/font_size = 32
+text = "Marco Bancale"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Label13" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(960, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.498039, 0.498039, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_anuts")
+theme_override_font_sizes/font_size = 32
+text = "European Cardano Community"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Label14" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(960, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.498039, 0.498039, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_anuts")
+theme_override_font_sizes/font_size = 32
+text = "Studio Evil"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Label15" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(960, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.498039, 0.498039, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_anuts")
+theme_override_font_sizes/font_size = 32
+text = "the Project Catalyst team"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Label16" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(960, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.498039, 0.498039, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_anuts")
+theme_override_font_sizes/font_size = 32
+text = "the NMKR team"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Label17" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(960, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.498039, 0.498039, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_anuts")
+theme_override_font_sizes/font_size = 32
+text = "$SNEK and $VIPER communities"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Label18" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(960, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.498039, 0.498039, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_anuts")
+theme_override_font_sizes/font_size = 32
+text = "Charles Hoskinson"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Control6" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 256)
+layout_mode = 2
+
+[node name="Label19" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(960, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.498039, 0.498039, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_anuts")
+theme_override_font_sizes/font_size = 32
+text = "YASG and the NMKR plugin for Godot are Open-Source projects, both available on GitHub under the permissive MIT license."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Label20" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(960, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.498039, 0.498039, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_anuts")
+theme_override_font_sizes/font_size = 32
+text = "Please consider minting the YASG NFTs to support our effort to facilitate Web3 adoptions for game developers working with Godot. Thank you!"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Control7" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 512)
+layout_mode = 2
+
+[node name="Label21" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(960, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.498039, 0.498039, 0.498039, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("2_anuts")
+theme_override_font_sizes/font_size = 32
+text = "(press SPACE to continue)"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

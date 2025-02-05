@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://bsmupnj06gyi4"]
+[gd_scene load_steps=9 format=4 uid="uid://bsmupnj06gyi4"]
 
 [ext_resource type="Script" path="res://scenes/island/terrain_controller.gd" id="1_o0aap"]
 [ext_resource type="PackedScene" uid="uid://dhc8j4axhseqi" path="res://scenes/consumable.tscn" id="2_020ik"]
@@ -7,8 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://ug2cgqqtfs3s" path="res://scenes/vfx_2d/vfx_2d.tscn" id="4_57aol"]
 [ext_resource type="Script" path="res://scenes/island/tile_utils.gd" id="4_dy10c"]
 [ext_resource type="Texture2D" uid="uid://drtw2i3gmvvk0" path="res://scenes/vfx_2d/spritesheets/smoke_1.png" id="5_ygqej"]
-[ext_resource type="Texture2D" uid="uid://bmrb5on5wu523" path="res://assets/images/water_transparent.png" id="6_rylp2"]
-[ext_resource type="Texture2D" uid="uid://dlau5uswek4bd" path="res://assets/images/water.png" id="7_2wln7"]
+[ext_resource type="Theme" uid="uid://bmaxqtcr7qr86" path="res://scenes/menu/theme.tres" id="8_3rmry"]
 
 [node name="Island" type="Node2D" node_paths=PackedStringArray("farm_tilemap", "level_tilemaps", "dry_tilemaps", "lake_tilemaps", "lake_target_tilemap")]
 script = ExtResource("1_o0aap")
@@ -135,21 +134,15 @@ tile_set = ExtResource("3_p6ihv")
 [node name="Vfx2D" parent="." instance=ExtResource("4_57aol")]
 visible = false
 z_index = 2
-scale = Vector2(2, 2)
+scale = Vector2(3, 3)
 texture = ExtResource("5_ygqej")
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(500, 0)
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="."]
-offset_right = 128.0
-offset_bottom = 32.0
-step = 0.01
-nine_patch_stretch = true
-stretch_margin_right = 64
-texture_under = ExtResource("6_rylp2")
-texture_progress = ExtResource("7_2wln7")
-
-[node name="Label" type="Label" parent="."]
-offset_right = 40.0
-offset_bottom = 23.0
+[node name="ProgressBar" type="ProgressBar" parent="."]
+custom_minimum_size = Vector2(60, 20)
+offset_right = 4.0
+offset_bottom = 27.0
+theme = ExtResource("8_3rmry")
+show_percentage = false

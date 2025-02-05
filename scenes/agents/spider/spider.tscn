@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://btq5nr41d5jyt"]
+
+[ext_resource type="Script" path="res://scenes/agents/spider/spider.gd" id="1_nsg13"]
+[ext_resource type="Texture2D" uid="uid://bu6dlqt4y4ubb" path="res://scenes/agents/spider/spider.png" id="2_n4j41"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0cff1"]
+radius = 12.0
+
+[node name="Spider" type="CharacterBody2D"]
+collision_layer = 4
+script = ExtResource("1_nsg13")
+max_speed = 800.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.5708
+texture = ExtResource("2_n4j41")
+hframes = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CircleShape2D_0cff1")

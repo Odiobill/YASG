@@ -1,12 +1,27 @@
-[gd_scene load_steps=3 format=3 uid="uid://dbu87tbffr3nb"]
+[gd_scene load_steps=6 format=3 uid="uid://dbu87tbffr3nb"]
 
 [ext_resource type="Script" path="res://scenes/audio_manager/audio_manager.gd" id="1_8g5pf"]
-[ext_resource type="AudioStream" uid="uid://bm3iq65vnumej" path="res://scenes/audio_manager/snakegame.mp3" id="2_bd8vj"]
+[ext_resource type="AudioStream" uid="uid://bm3iq65vnumej" path="res://scenes/audio_manager/bgm/snakegame.mp3" id="2_bd8vj"]
+[ext_resource type="AudioStream" uid="uid://byjtjhg77gc7x" path="res://scenes/audio_manager/sfx/button_hover.wav" id="3_080iq"]
+[ext_resource type="AudioStream" uid="uid://djuanhwu1uvf7" path="res://scenes/audio_manager/sfx/sfx_button_pressed.wav" id="4_3ylye"]
+[ext_resource type="AudioStream" uid="uid://dnabg86oqv73u" path="res://scenes/audio_manager/sfx/asset_selected.wav" id="4_fsp6i"]
 
-[node name="AudioManager" type="Node" node_paths=PackedStringArray("audio")]
+[node name="AudioManager" type="Node"]
 script = ExtResource("1_8g5pf")
-audio = [NodePath("MusicMenu")]
 
-[node name="MusicMenu" type="AudioStreamPlayer" parent="."]
+[node name="bgm_menu" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_bd8vj")
+bus = &"BGM"
 parameters/looping = true
+
+[node name="sfx_button_hover" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_080iq")
+bus = &"SFX"
+
+[node name="sfx_button_pressed" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_3ylye")
+bus = &"SFX"
+
+[node name="sfx_asset_selected" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_fsp6i")
+bus = &"SFX"

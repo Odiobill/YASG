@@ -1,6 +1,8 @@
-[gd_resource type="Theme" load_steps=7 format=3 uid="uid://bmaxqtcr7qr86"]
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://bmaxqtcr7qr86"]
 
 [ext_resource type="FontFile" uid="uid://bvxh1y87oiahj" path="res://assets/fonts/Pixeled.ttf" id="1_r5e2s"]
+[ext_resource type="Texture2D" uid="uid://cqxwmhdhecluv" path="res://scenes/menu/images/grabber.png" id="2_nn8eq"]
+[ext_resource type="Texture2D" uid="uid://4tvowbrrhrsg" path="res://scenes/menu/images/grabber_highlight.png" id="3_obee1"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s0x5y"]
 
@@ -12,7 +14,6 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.933333, 0.933333, 0.933333, 1)
 expand_margin_left = 8.0
-expand_margin_top = 8.0
 expand_margin_right = 8.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v4h5c"]
@@ -22,7 +23,6 @@ border_width_top = 4
 border_width_right = 2
 border_width_bottom = 2
 expand_margin_left = 8.0
-expand_margin_top = 8.0
 expand_margin_right = 8.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_shkmq"]
@@ -33,15 +33,20 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.933333, 0.933333, 0.933333, 1)
 expand_margin_left = 8.0
-expand_margin_top = 8.0
 expand_margin_right = 8.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_msgjk"]
-bg_color = Color(0.6, 0.6, 0.6, 0.87451)
+bg_color = Color(0.258824, 0.258824, 0.258824, 0.87451)
 border_width_left = 8
 border_width_top = 8
 border_width_right = 4
 border_width_bottom = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2o46s"]
+bg_color = Color(0.121569, 0.121569, 0.121569, 0.74902)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sovc4"]
+bg_color = Color(0, 0.623529, 0.937255, 1)
 
 [resource]
 Button/constants/outline_size = 8
@@ -51,8 +56,12 @@ Button/styles/focus = SubResource("StyleBoxEmpty_s0x5y")
 Button/styles/hover = SubResource("StyleBoxFlat_c0lsx")
 Button/styles/normal = SubResource("StyleBoxFlat_v4h5c")
 Button/styles/pressed = SubResource("StyleBoxFlat_shkmq")
+HSlider/icons/grabber = ExtResource("2_nn8eq")
+HSlider/icons/grabber_highlight = ExtResource("3_obee1")
 Label/colors/font_outline_color = Color(0, 0, 0, 1)
-Label/constants/outline_size = 8
+Label/constants/outline_size = 4
 Label/font_sizes/font_size = 16
 Label/fonts/font = ExtResource("1_r5e2s")
 Panel/styles/panel = SubResource("StyleBoxFlat_msgjk")
+ProgressBar/styles/background = SubResource("StyleBoxFlat_2o46s")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_sovc4")

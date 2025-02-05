@@ -5,7 +5,7 @@ extends SnakeBody
 @export var wheel_base: float = 100
 @export var steering_angle: float = 25
 @export var min_power: float = 700
-@export var max_power: float = 900
+#@export var max_power: float = 900
 @export var friction: float = -55
 @export var drag: float = -0.06
 @export var slip_speed: float = 400
@@ -39,10 +39,11 @@ func _apply_friction(delta):
 func _get_input():
 	var turn = Input.get_axis("left", "right")
 	_steer_direction = turn * deg_to_rad(steering_angle)
-	if Input.is_action_pressed("accelerate"):
-		_acceleration = transform.x * max_power
-	else:
-		_acceleration = transform.x * min_power
+	#if Input.is_action_pressed("accelerate"):
+		#_acceleration = transform.x * max_power
+	#else:
+		#_acceleration = transform.x * min_power
+	_acceleration = transform.x * min_power
 
 
 func _calculate_steering(delta):

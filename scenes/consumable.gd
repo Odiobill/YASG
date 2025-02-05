@@ -14,6 +14,7 @@ var _sprite_texture: Texture2D
 var _sprite_hframes: int
 var _sprite_vframes: int
 var _frame_index: int
+var _expire_timer: Timer
 @onready var sprite_2d: Sprite2D = $Sprite2D
 
 var value: float:
@@ -31,13 +32,8 @@ func _ready() -> void:
 		sprite_2d.vframes = _sprite_vframes
 		sprite_2d.frame_coords = images[_frame_index]
 	
-	if expire_time > 0.0:
-		var timer := Timer.new()
-		timer.one_shot = true
-		timer.autostart = false
-		timer.timeout.connect(_on_timer_timeout)
-		add_child(timer)
-		timer.start(expire_time)
+	if expire_time > 0.0 and not can_consume:
+		create_expire_timer()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -53,11 +49,15 @@ func setup(_max_value: float, _images: PackedVector2Array, _texture: Texture2D, 
 	_sprite_hframes = _hframes
 	_sprite_vframes = _vframes
 	_frame_index = frame_index
-	#
-	#texture = _texture
-	#hframes = _hframes
-	#vframes = _vframes
-	#frame_coords = images[frame_index]
+
+
+func create_expire_timer() -> void:
+	_expire_timer = Timer.new()
+	_expire_timer.one_shot = true
+	_expire_timer.autostart = false
+	_expire_timer.timeout.connect(_on_timer_timeout)
+	add_child(_expire_timer)
+	_expire_timer.start(expire_time)
 
 
 func consume(amount: float) -> void:
@@ -72,6 +72,9 @@ func consume(amount: float) -> void:
 		partial += amount_per_frame
 		index += 1
 	sprite_2d.frame_coords = images[images.size() - index]
+	
+	if index == images.size() - 1 and expire_time > 0.0:
+		create_expire_timer()
 
 
 func _on_timer_timeout() -> void:
@@ -81,9 +84,16 @@ func _on_timer_timeout() -> void:
 		tween.tween_property(sprite_2d, "self_modulate", Color.TRANSPARENT, 0.4)
 		tween.tween_property(sprite_2d, "self_modulate", color, 0.4)
 	tween.tween_property(sprite_2d, "self_modulate", Color.TRANSPARENT, 0.4)
-	tween.finished.connect(func(): queue_free())
+	tween.finished.connect(func():
+		if is_instance_valid(self):
+			queue_free()
+	)
 
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is SnakeHead:
 		catched.emit(self)
+	elif body is Snail:
+		if _expire_timer.time_left > 0:
+			_expire_timer.stop()
+			_expire_timer.timeout.emit()
