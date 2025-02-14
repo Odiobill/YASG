@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dqnr6evjbkugj"
-path="res://.godot/imported/stripe.png-9fc6fb35cf05d6641bbad27e788fe957.ctex"
+uid="uid://h4m0326r433o"
+path="res://.godot/imported/line_4.png-b9e14d6ca12ed86b34081492970a3f74.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/agents/snake/images/stripe.png"
-dest_files=["res://.godot/imported/stripe.png-9fc6fb35cf05d6641bbad27e788fe957.ctex"]
+source_file="res://scenes/agents/snake/images/line_4.png"
+dest_files=["res://.godot/imported/line_4.png-b9e14d6ca12ed86b34081492970a3f74.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dp8mdx47bqyne"
-path="res://.godot/imported/shooter_collision.png-8cb61eb4207686ddc2f82355c0cc1f1b.ctex"
+uid="uid://cpn44uambq2y6"
+path="res://.godot/imported/line_6.png-63597430f979525a0616dabdb0790177.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/shooter_collision.png"
-dest_files=["res://.godot/imported/shooter_collision.png-8cb61eb4207686ddc2f82355c0cc1f1b.ctex"]
+source_file="res://scenes/agents/snake/images/line_6.png"
+dest_files=["res://.godot/imported/line_6.png-63597430f979525a0616dabdb0790177.ctex"]
 
 [params]
 

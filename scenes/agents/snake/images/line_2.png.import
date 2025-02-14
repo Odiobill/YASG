@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dhgq6eug18x2y"
-path="res://.godot/imported/Tutti_Frutti_FREE_Outlined.png-720d2a004fd22b1bff9dece810b99e0d.ctex"
+uid="uid://ddulvpsd3s4wg"
+path="res://.godot/imported/line_2.png-ce3a9436b9b31ec89710a428e5e45071.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/Tutti_Frutti_FREE_Outlined.png"
-dest_files=["res://.godot/imported/Tutti_Frutti_FREE_Outlined.png-720d2a004fd22b1bff9dece810b99e0d.ctex"]
+source_file="res://scenes/agents/snake/images/line_2.png"
+dest_files=["res://.godot/imported/line_2.png-ce3a9436b9b31ec89710a428e5e45071.ctex"]
 
 [params]
 

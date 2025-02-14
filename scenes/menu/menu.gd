@@ -28,7 +28,6 @@ var _config_wallet := ""
 var _verification_address := ""
 var _verification_uid := ""
 var _verification_timer: Timer
-#var _assets: Array = []
 var _asset_buttons: Array[AssetButton] = []
 var _animations: Array[Dictionary] = []
 var _volumeMaster: float
@@ -134,8 +133,20 @@ func get_snake_stats(asset: Dictionary) -> Dictionary:
 		stats["steering_angle"] = 0.5
 		stats["wander_drain"] = 0.5
 		stats["shot_drain"] = 0.5
-		
+		stats["skin"] = 2
+	elif asset["policyId"] == asset_box.SNEK_P_ID:
+		stats["skin"] = 0
+	elif asset["policyId"] == asset_box.VIPER_P_ID:
+		stats["skin"] = 1
+	
 	return stats
+
+
+func _string_to_hex(input: String) -> String:
+	var hex_string = ""
+	for character in input:
+		hex_string += "%02X" % character.unicode_at(0)
+	return hex_string
 
 
 func _animate(sprite: Sprite2D, time: float) -> void:
@@ -171,10 +182,12 @@ func _update_wallet() -> void:
 		var foundChang := false
 		var foundHandle := ""
 		
-		#_assets = []
 		var assets := await nmkr.get_all_assets_in_wallet(_config_wallet)
 		for asset in assets:
-			if asset["policyId"] == HANDLE_P_ID:
+			var hex := _string_to_hex(asset["assetName"])
+			asset["policyId"] = asset["unit"].left(asset["unit"].length() - hex.length())
+			
+			if asset["unit"].begins_with(HANDLE_P_ID):
 				if foundHandle != "":
 					continue
 				foundHandle = "$" + asset["assetName"].to_upper().left(14)
@@ -188,7 +201,6 @@ func _update_wallet() -> void:
 					foundChang = true
 				
 				asset["snake"] = get_snake_stats(asset)
-				#_assets.append(asset)
 				
 				var button := ASSET_BUTTON.instantiate() as AssetButton
 				button.asset = asset

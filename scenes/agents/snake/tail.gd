@@ -27,6 +27,4 @@ func grow() -> SnakeBody:
 
 	_parent.call_deferred("add_child", part)
 	_parent.call_deferred("add_child", self)
-	#_parent.add_child(part)
-	#_parent.add_child(self)
 	return part

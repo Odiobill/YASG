@@ -1,25 +1,33 @@
-[gd_scene load_steps=5 format=3 uid="uid://dmu2s2gvh8rah"]
+[gd_scene load_steps=11 format=3 uid="uid://dmu2s2gvh8rah"]
 
 [ext_resource type="Script" path="res://scenes/agents/snake/body.gd" id="1_fktpf"]
-[ext_resource type="Texture2D" uid="uid://di67asg6t88o4" path="res://scenes/agents/snake/images/body.png" id="2_kqebg"]
-[ext_resource type="Texture2D" uid="uid://dqnr6evjbkugj" path="res://scenes/agents/snake/images/stripe.png" id="3_gt8o6"]
+[ext_resource type="Texture2D" uid="uid://b6j3njryt36vm" path="res://scenes/agents/snake/images/line_0.png" id="2_5lvwi"]
+[ext_resource type="Texture2D" uid="uid://d05jiuvghkdr0" path="res://scenes/agents/snake/images/body.png" id="2_isldm"]
+[ext_resource type="Texture2D" uid="uid://sg7k7lwyn8lx" path="res://scenes/agents/snake/images/line_1.png" id="3_judjd"]
+[ext_resource type="Texture2D" uid="uid://ddulvpsd3s4wg" path="res://scenes/agents/snake/images/line_2.png" id="4_1ugqf"]
+[ext_resource type="Texture2D" uid="uid://btnhcwisuhysa" path="res://scenes/agents/snake/images/line_3.png" id="5_bdvj0"]
+[ext_resource type="Texture2D" uid="uid://h4m0326r433o" path="res://scenes/agents/snake/images/line_4.png" id="6_wcfk7"]
+[ext_resource type="Texture2D" uid="uid://b83sonvnuyvt8" path="res://scenes/agents/snake/images/line_5.png" id="7_efpwm"]
+[ext_resource type="Texture2D" uid="uid://cpn44uambq2y6" path="res://scenes/agents/snake/images/line_6.png" id="8_0x267"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4h66u"]
-radius = 14.0
 height = 55.0
 
-[node name="Body" type="CharacterBody2D" node_paths=PackedStringArray("follower_target", "follower_line_to", "line")]
+[node name="Body" type="CharacterBody2D" node_paths=PackedStringArray("follower_target", "follower_line_to", "line", "sprite_2d")]
 collision_layer = 2
 collision_mask = 20
 script = ExtResource("1_fktpf")
 follower_target = NodePath("Target Marker2D")
 follower_line_to = NodePath("LineTo Marker2D")
 line = NodePath("Line2D")
+line_textures = Array[Texture2D]([ExtResource("2_5lvwi"), ExtResource("3_judjd"), ExtResource("4_1ugqf"), ExtResource("5_bdvj0"), ExtResource("6_wcfk7"), ExtResource("7_efpwm"), ExtResource("8_0x267")])
+sprite_2d = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 1
 position = Vector2(-32, 0)
-texture = ExtResource("2_kqebg")
+texture = ExtResource("2_isldm")
+vframes = 7
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-31, 0)
@@ -35,6 +43,6 @@ position = Vector2(-55, 0)
 [node name="Line2D" type="Line2D" parent="."]
 position = Vector2(-2, 0)
 points = PackedVector2Array(0, 0, 0, 0)
-width = 32.0
-texture = ExtResource("3_gt8o6")
+width = 24.0
+texture = ExtResource("2_5lvwi")
 texture_mode = 1

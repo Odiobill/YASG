@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://myw0tg8ykmvq"
-path="res://.godot/imported/head.png-fc1d703a818c4b4fa09c8a3431c041d4.ctex"
+uid="uid://byb7fijedn0pb"
+path="res://.godot/imported/food.png-458cb752d3ac20522c2cb0b2c314d5ca.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/agents/snake/images/head.png"
-dest_files=["res://.godot/imported/head.png-fc1d703a818c4b4fa09c8a3431c041d4.ctex"]
+source_file="res://scenes/island/food.png"
+dest_files=["res://.godot/imported/food.png-458cb752d3ac20522c2cb0b2c314d5ca.ctex"]
 
 [params]
 

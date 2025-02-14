@@ -24,6 +24,8 @@ signal level_completed(level: int)
 @export var hit_water: float
 @export var consumable_scene: PackedScene
 @export var food_texture: Texture2D
+@export var food_columns: int = 5
+@export var food_rows: int = 2
 @export var food_spawn_rate: float = 5.0
 @export var food_expire_time: float = 60.0
 @export var food_value: float = 10.0
@@ -34,7 +36,8 @@ var _lakes: Array[Dictionary]
 var _lakes_container: Node2D
 var _lakes_completed: int
 var _spawn_timer: Timer
-@onready var vfx_2d: Vfx2D = $Vfx2D
+@onready var vfx_lake: Vfx2D = $Vfx2DLake
+@onready var vfx_food: Vfx2D = $Vfx2DFood
 #@onready var water_bar: TextureProgressBar = $TextureProgressBar
 @onready var water_bar: ProgressBar = $ProgressBar
 
@@ -158,11 +161,13 @@ func spawn_lake(coords: Vector2i, size: int = 0, max_level: int = -1, completed 
 func spawn_food(min_radius: float = -1.0) -> void:
 	var consumable := consumable_scene.instantiate() as Consumable
 	var images: PackedVector2Array = []
-	for x in range(8):
-		for y in range(3):
+	#for x in range(8):
+	for x in food_columns:
+		#for y in range(3):
+		for y in food_rows:
 			images.append(Vector2(x, y))
 	
-	consumable.setup(food_value, images, food_texture, 8, 8, range(0, images.size()).pick_random())
+	consumable.setup(food_value, images, food_texture, food_columns, food_rows, range(0, images.size()).pick_random())
 	if min_radius < 0.0:
 		min_radius = level_barren_ranges[level]
 	var max_radius := level_barren_ranges[0]
@@ -199,8 +204,8 @@ func upgrade_lake(i: int) -> void:
 			if _lakes_completed == levels[level].size():
 				level_completed.emit(level)
 		
-		vfx_2d.global_position = draw_lake(_lakes[i]["level"], _lakes[i]["coords"], _lakes[i]["completed"])
-		vfx_2d.play()
+		vfx_lake.global_position = draw_lake(_lakes[i]["level"], _lakes[i]["coords"], _lakes[i]["completed"])
+		vfx_lake.play()
 
 
 func lake_points(subject: Vector2, fill: float = 0.0) -> float:
@@ -246,8 +251,8 @@ func switch_level(new_level: int, duration: float = 1.0) -> void:
 	level = new_level
 	
 	for coords in levels[new_level]:
-		vfx_2d.global_position = spawn_lake(coords, 0, new_level)
-		vfx_2d.play()
+		vfx_lake.global_position = spawn_lake(coords, 0, new_level)
+		vfx_lake.play()
 		await get_tree().create_timer(duration).timeout
 
 
@@ -267,4 +272,6 @@ func _on_spawn_timer_timeout() -> void:
 func _on_food_eaten(consumable: Consumable) -> void:
 	food_eaten.emit(consumable.value)
 	
+	vfx_food.global_position = consumable.global_position
+	vfx_food.play()
 	consumable.queue_free()

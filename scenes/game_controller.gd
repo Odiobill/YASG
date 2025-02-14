@@ -222,6 +222,10 @@ func update_values(asset: Dictionary) -> void:
 	
 	for skill in asset["snake"].keys():
 		match skill:
+			"skin":
+				snake.skin = asset["snake"][skill]
+				print("skin: " + str(snake.skin))
+			
 			"steering_angle":
 				steering_angle += steering_angle_maxdiff * asset["snake"][skill]
 			

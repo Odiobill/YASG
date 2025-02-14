@@ -1,12 +1,13 @@
-[gd_scene load_steps=9 format=4 uid="uid://bsmupnj06gyi4"]
+[gd_scene load_steps=10 format=4 uid="uid://bsmupnj06gyi4"]
 
 [ext_resource type="Script" path="res://scenes/island/terrain_controller.gd" id="1_o0aap"]
 [ext_resource type="PackedScene" uid="uid://dhc8j4axhseqi" path="res://scenes/consumable.tscn" id="2_020ik"]
+[ext_resource type="Texture2D" uid="uid://byb7fijedn0pb" path="res://scenes/island/food.png" id="3_nrfw8"]
 [ext_resource type="TileSet" uid="uid://b6n87eohfnsuh" path="res://scenes/island/tileset.tres" id="3_p6ihv"]
-[ext_resource type="Texture2D" uid="uid://dhgq6eug18x2y" path="res://assets/images/Tutti_Frutti_FREE_Outlined.png" id="3_rbelh"]
 [ext_resource type="PackedScene" uid="uid://ug2cgqqtfs3s" path="res://scenes/vfx_2d/vfx_2d.tscn" id="4_57aol"]
 [ext_resource type="Script" path="res://scenes/island/tile_utils.gd" id="4_dy10c"]
 [ext_resource type="Texture2D" uid="uid://drtw2i3gmvvk0" path="res://scenes/vfx_2d/spritesheets/smoke_1.png" id="5_ygqej"]
+[ext_resource type="Texture2D" uid="uid://bev0rup42w0is" path="res://scenes/vfx_2d/spritesheets/explosion_4.png" id="8_2j52i"]
 [ext_resource type="Theme" uid="uid://bmaxqtcr7qr86" path="res://scenes/menu/theme.tres" id="8_3rmry"]
 
 [node name="Island" type="Node2D" node_paths=PackedStringArray("farm_tilemap", "level_tilemaps", "dry_tilemaps", "lake_tilemaps", "lake_target_tilemap")]
@@ -25,7 +26,7 @@ lake_mask = 4
 cell_offset = Vector2(-64, -64)
 hit_water = 10.0
 consumable_scene = ExtResource("2_020ik")
-food_texture = ExtResource("3_rbelh")
+food_texture = ExtResource("3_nrfw8")
 
 [node name="TileMapLayers" type="Node2D" parent="."]
 
@@ -131,11 +132,16 @@ tile_set = ExtResource("3_p6ihv")
 [node name="TileMapLayerLakeTarget" type="TileMapLayer" parent="TileMapLayers"]
 tile_set = ExtResource("3_p6ihv")
 
-[node name="Vfx2D" parent="." instance=ExtResource("4_57aol")]
+[node name="Vfx2DLake" parent="." instance=ExtResource("4_57aol")]
 visible = false
 z_index = 2
 scale = Vector2(3, 3)
 texture = ExtResource("5_ygqej")
+
+[node name="Vfx2DFood" parent="." instance=ExtResource("4_57aol")]
+visible = false
+z_index = 2
+texture = ExtResource("8_2j52i")
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(500, 0)

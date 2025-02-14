@@ -1,48 +1,56 @@
-[gd_scene load_steps=10 format=3 uid="uid://mc1bll8wnocb"]
+[gd_scene load_steps=16 format=3 uid="uid://mc1bll8wnocb"]
 
 [ext_resource type="Script" path="res://scenes/agents/snake/snake.gd" id="1_qonhb"]
 [ext_resource type="Script" path="res://scenes/agents/snake/head.gd" id="2_dm0bo"]
-[ext_resource type="Texture2D" uid="uid://ds8u1jwr02fqr" path="res://scenes/agents/snake/images/head.png" id="3_ipr5v"]
+[ext_resource type="Texture2D" uid="uid://myw0tg8ykmvq" path="res://scenes/agents/snake/images/head.png" id="3_44cfn"]
 [ext_resource type="Script" path="res://scenes/agents/snake/tail.gd" id="4_3bbe2"]
+[ext_resource type="Texture2D" uid="uid://sg7k7lwyn8lx" path="res://scenes/agents/snake/images/line_1.png" id="4_rm8is"]
+[ext_resource type="Texture2D" uid="uid://ddulvpsd3s4wg" path="res://scenes/agents/snake/images/line_2.png" id="5_66edv"]
 [ext_resource type="PackedScene" uid="uid://dmu2s2gvh8rah" path="res://scenes/agents/snake/body.tscn" id="5_jv30t"]
-[ext_resource type="Texture2D" uid="uid://cp3ds2787ob8b" path="res://scenes/agents/snake/images/tail.png" id="6_n0dmw"]
-[ext_resource type="Texture2D" uid="uid://dqnr6evjbkugj" path="res://scenes/agents/snake/images/stripe.png" id="7_xpuuk"]
+[ext_resource type="Texture2D" uid="uid://dhrfh5mstp1ad" path="res://scenes/agents/snake/images/tail.png" id="6_j2fd6"]
+[ext_resource type="Texture2D" uid="uid://btnhcwisuhysa" path="res://scenes/agents/snake/images/line_3.png" id="6_r2qi3"]
+[ext_resource type="Texture2D" uid="uid://b6j3njryt36vm" path="res://scenes/agents/snake/images/line_0.png" id="7_jar83"]
+[ext_resource type="Texture2D" uid="uid://h4m0326r433o" path="res://scenes/agents/snake/images/line_4.png" id="7_mpxny"]
+[ext_resource type="Texture2D" uid="uid://b83sonvnuyvt8" path="res://scenes/agents/snake/images/line_5.png" id="8_2tm67"]
+[ext_resource type="Texture2D" uid="uid://cpn44uambq2y6" path="res://scenes/agents/snake/images/line_6.png" id="9_y01g8"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_02bla"]
-radius = 15.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nnj7v"]
-radius = 11.0
-height = 50.0
+radius = 8.0
+height = 42.0
 
 [node name="Snake" type="Node2D"]
 script = ExtResource("1_qonhb")
 grow_scale_add = Vector2(0.025, 0.025)
 
-[node name="Head" type="CharacterBody2D" parent="." node_paths=PackedStringArray("follower_target", "follower_line_to")]
+[node name="Head" type="CharacterBody2D" parent="." node_paths=PackedStringArray("follower_target", "follower_line_to", "sprite_2d")]
 z_index = 1
 collision_mask = 4
 script = ExtResource("2_dm0bo")
 follower_target = NodePath("Target Marker2D")
 follower_line_to = NodePath("LineTo Marker2D")
+line_textures = Array[Texture2D]([ExtResource("7_jar83"), ExtResource("4_rm8is"), ExtResource("5_66edv"), ExtResource("6_r2qi3"), ExtResource("7_mpxny"), ExtResource("8_2tm67"), ExtResource("9_y01g8")])
+sprite_2d = NodePath("Sprite2D")
 rotation_speed = 30.0
 
 [node name="Sprite2D" type="Sprite2D" parent="Head"]
-texture = ExtResource("3_ipr5v")
+texture = ExtResource("3_44cfn")
+vframes = 7
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Head"]
-position = Vector2(12.5, 0)
+position = Vector2(16, 0)
 shape = SubResource("CircleShape2D_02bla")
 
 [node name="Target Marker2D" type="Marker2D" parent="Head"]
 position = Vector2(-32, 0)
 
 [node name="LineTo Marker2D" type="Marker2D" parent="Head"]
-position = Vector2(-10, 0)
+position = Vector2(-16, 0)
 
 [node name="PartsContainer" type="Node2D" parent="."]
 
-[node name="Tail" type="CharacterBody2D" parent="PartsContainer" node_paths=PackedStringArray("target", "follower_target", "line")]
+[node name="Tail" type="CharacterBody2D" parent="PartsContainer" node_paths=PackedStringArray("target", "follower_target", "line", "sprite_2d")]
 z_index = 1
 position = Vector2(-30, 0)
 collision_layer = 2
@@ -52,10 +60,14 @@ body_scene = ExtResource("5_jv30t")
 target = NodePath("../../Head")
 follower_target = NodePath("Sprite2D")
 line = NodePath("Line2D")
+line_textures = Array[Texture2D]([ExtResource("7_jar83"), ExtResource("4_rm8is"), ExtResource("5_66edv"), ExtResource("6_r2qi3"), ExtResource("7_mpxny"), ExtResource("8_2tm67"), ExtResource("9_y01g8")])
+sprite_2d = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="PartsContainer/Tail"]
+z_index = 1
 position = Vector2(-32, 0)
-texture = ExtResource("6_n0dmw")
+texture = ExtResource("6_j2fd6")
+vframes = 7
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PartsContainer/Tail"]
 position = Vector2(-28, 0)
@@ -64,8 +76,8 @@ shape = SubResource("CapsuleShape2D_nnj7v")
 
 [node name="Line2D" type="Line2D" parent="PartsContainer/Tail"]
 points = PackedVector2Array(-10, 0, 0, 0)
-width = 32.0
-texture = ExtResource("7_xpuuk")
+width = 24.0
+texture = ExtResource("7_jar83")
 texture_mode = 1
 
 [node name="TimerProcess" type="Timer" parent="."]
