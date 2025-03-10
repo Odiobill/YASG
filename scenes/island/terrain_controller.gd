@@ -36,9 +36,10 @@ var _lakes: Array[Dictionary]
 var _lakes_container: Node2D
 var _lakes_completed: int
 var _spawn_timer: Timer
+var _sfx_water_take: AudioStreamPlayer
+var _sfx_water_drop: AudioStreamPlayer
 @onready var vfx_lake: Vfx2D = $Vfx2DLake
 @onready var vfx_food: Vfx2D = $Vfx2DFood
-#@onready var water_bar: TextureProgressBar = $TextureProgressBar
 @onready var water_bar: ProgressBar = $ProgressBar
 
 
@@ -54,6 +55,9 @@ var level: int = 0:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	_sfx_water_take = AudioManager.audio("sfx_water_taken")
+	_sfx_water_drop = AudioManager.audio("sfx_water_deployed")
+	
 	water_bar.visible = false
 	_spawn_timer = Timer.new()
 	_spawn_timer.name = "SpawnTimer"
@@ -161,9 +165,7 @@ func spawn_lake(coords: Vector2i, size: int = 0, max_level: int = -1, completed 
 func spawn_food(min_radius: float = -1.0) -> void:
 	var consumable := consumable_scene.instantiate() as Consumable
 	var images: PackedVector2Array = []
-	#for x in range(8):
 	for x in food_columns:
-		#for y in range(3):
 		for y in food_rows:
 			images.append(Vector2(x, y))
 	
@@ -178,6 +180,10 @@ func spawn_food(min_radius: float = -1.0) -> void:
 	consumable.catched.connect(_on_food_eaten)
 	add_child(consumable)
 	food_spawned.emit(consumable)
+	
+	var tween := get_tree().create_tween()
+	tween.tween_property(consumable, "scale", Vector2.ONE, 1).from(Vector2.ZERO)
+	tween.set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 
 
 func draw_lake(size: int, coords: Vector2i, completed := false) -> Vector2:
@@ -206,6 +212,7 @@ func upgrade_lake(i: int) -> void:
 		
 		vfx_lake.global_position = draw_lake(_lakes[i]["level"], _lakes[i]["coords"], _lakes[i]["completed"])
 		vfx_lake.play()
+		AudioManager.audio("sfx_lake_upgraded").play()
 
 
 func lake_points(subject: Vector2, fill: float = 0.0) -> float:
@@ -216,10 +223,16 @@ func lake_points(subject: Vector2, fill: float = 0.0) -> float:
 		if distance < _lakes[i].shape.radius * 1.1:
 			if _lakes[i]["completed"]:
 				points += distance / _lakes[i].shape.radius
+				
+				if not _sfx_water_take.playing:
+					_sfx_water_take.play()
 			elif fill > 0.0:
 				var diff: float = distance / _lakes[i].shape.radius
 				points -= diff
 				_lakes[i]["water"] += diff * fill
+				
+				if not _sfx_water_drop.playing:
+					_sfx_water_drop.play()
 				
 				if _lakes[i]["water"] > _lakes[i].shape.radius * water_per_size:
 					upgrade_lake(i)
@@ -253,6 +266,7 @@ func switch_level(new_level: int, duration: float = 1.0) -> void:
 	for coords in levels[new_level]:
 		vfx_lake.global_position = spawn_lake(coords, 0, new_level)
 		vfx_lake.play()
+		AudioManager.audio("sfx_lake_reveal").play()
 		await get_tree().create_timer(duration).timeout
 
 

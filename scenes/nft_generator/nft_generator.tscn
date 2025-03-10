@@ -1,0 +1,85 @@
+[gd_scene load_steps=34 format=3 uid="uid://c5ldpsq8lxq74"]
+
+[ext_resource type="Theme" uid="uid://bmaxqtcr7qr86" path="res://scenes/menu/theme.tres" id="1_odt35"]
+[ext_resource type="Script" path="res://scenes/nft_generator/nft_generator.gd" id="1_uvwp0"]
+[ext_resource type="Texture2D" uid="uid://b03yenhwqcirb" path="res://scenes/nft_generator/layers/0/0.png" id="2_1ke0e"]
+[ext_resource type="Texture2D" uid="uid://bq5uefpcihkhr" path="res://scenes/nft_generator/layers/0/1.png" id="3_5ux1h"]
+[ext_resource type="Texture2D" uid="uid://cwh5lkt37ape5" path="res://scenes/nft_generator/layers/0/2.png" id="4_4vlec"]
+[ext_resource type="Texture2D" uid="uid://c8kv343u2gmhh" path="res://scenes/nft_generator/layers/0/3.png" id="5_0d564"]
+[ext_resource type="Texture2D" uid="uid://c7ml13770icaf" path="res://scenes/nft_generator/layers/0/4.png" id="6_fqtac"]
+[ext_resource type="Texture2D" uid="uid://dt4as1qcb20sm" path="res://scenes/nft_generator/layers/1/0.png" id="7_m1i74"]
+[ext_resource type="Texture2D" uid="uid://c4ro55y8wjo3y" path="res://scenes/nft_generator/layers/1/1.png" id="8_0ia61"]
+[ext_resource type="Texture2D" uid="uid://n1cicrlsms87" path="res://scenes/nft_generator/layers/1/2.png" id="9_fcvfc"]
+[ext_resource type="Texture2D" uid="uid://cym1sft66ym5l" path="res://scenes/nft_generator/layers/1/3.png" id="10_j1crn"]
+[ext_resource type="Texture2D" uid="uid://bn06lpjwsaa4" path="res://scenes/nft_generator/layers/1/4.png" id="11_fga7s"]
+[ext_resource type="Texture2D" uid="uid://b6dygffje5wh2" path="res://scenes/nft_generator/layers/2/0.png" id="12_6jqxt"]
+[ext_resource type="Texture2D" uid="uid://dckpprnbasiir" path="res://scenes/nft_generator/layers/2/1.png" id="13_g843n"]
+[ext_resource type="Texture2D" uid="uid://bvgnrwis3pvur" path="res://scenes/nft_generator/layers/2/2.png" id="14_8a8p7"]
+[ext_resource type="Texture2D" uid="uid://dqw2ine5vpm05" path="res://scenes/nft_generator/layers/2/3.png" id="16_0gqsk"]
+[ext_resource type="Texture2D" uid="uid://bghbh5tm0tday" path="res://scenes/nft_generator/layers/2/4.png" id="17_qya0l"]
+[ext_resource type="Texture2D" uid="uid://dif4fvsua6yd5" path="res://scenes/nft_generator/layers/3/0.png" id="18_682iq"]
+[ext_resource type="Texture2D" uid="uid://cm65cdf2ptpkb" path="res://scenes/nft_generator/layers/3/1.png" id="19_smuie"]
+[ext_resource type="Texture2D" uid="uid://cxmuqf5dij4dj" path="res://scenes/nft_generator/layers/3/3.png" id="20_2qokk"]
+[ext_resource type="Texture2D" uid="uid://dhsxdaxcj53mw" path="res://scenes/nft_generator/layers/3/2.png" id="20_jhxpw"]
+[ext_resource type="Texture2D" uid="uid://ckghpctkm13br" path="res://scenes/nft_generator/layers/4/3.png" id="20_k37lc"]
+[ext_resource type="Texture2D" uid="uid://cbyexyomaeedj" path="res://scenes/nft_generator/layers/3/4.png" id="21_hrb51"]
+[ext_resource type="Texture2D" uid="uid://dtcwecsufhdj2" path="res://scenes/nft_generator/layers/3/5.png" id="22_y6dc6"]
+[ext_resource type="Texture2D" uid="uid://d174uvfj0ic2r" path="res://scenes/nft_generator/layers/4/0.png" id="23_8j444"]
+[ext_resource type="Texture2D" uid="uid://c1jm767nupqb7" path="res://scenes/nft_generator/layers/4/1.png" id="24_latr1"]
+[ext_resource type="Texture2D" uid="uid://sdak7e8a37uk" path="res://scenes/nft_generator/layers/4/5.png" id="25_4wq02"]
+[ext_resource type="Texture2D" uid="uid://bws4h56bo3fj5" path="res://scenes/nft_generator/layers/4/2.png" id="25_lnoqu"]
+[ext_resource type="Texture2D" uid="uid://dysm7dupuk40g" path="res://scenes/nft_generator/layers/4/4.png" id="27_8f5b7"]
+[ext_resource type="Texture2D" uid="uid://b2pwoss2d5di4" path="res://scenes/nft_generator/layers/5/0.png" id="28_w8wxn"]
+[ext_resource type="Texture2D" uid="uid://diqpxnaqcvhkc" path="res://scenes/nft_generator/layers/5/1.png" id="29_2uijc"]
+[ext_resource type="Texture2D" uid="uid://c30c2vgnanyoi" path="res://scenes/nft_generator/layers/5/2.png" id="30_cveju"]
+[ext_resource type="Script" path="res://addons/nmkr/nmkr.gd" id="52_ythkj"]
+
+[node name="NftGenerator" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_odt35")
+script = ExtResource("1_uvwp0")
+layer_0 = Array[Texture2D]([ExtResource("2_1ke0e"), ExtResource("3_5ux1h"), ExtResource("4_4vlec"), ExtResource("5_0d564"), ExtResource("6_fqtac")])
+layer_1 = Array[Texture2D]([ExtResource("7_m1i74"), ExtResource("8_0ia61"), ExtResource("9_fcvfc"), ExtResource("10_j1crn"), ExtResource("11_fga7s")])
+layer_2 = Array[Texture2D]([ExtResource("12_6jqxt"), ExtResource("13_g843n"), ExtResource("14_8a8p7"), ExtResource("16_0gqsk"), ExtResource("17_qya0l")])
+layer_3 = Array[Texture2D]([ExtResource("18_682iq"), ExtResource("19_smuie"), ExtResource("20_jhxpw"), ExtResource("20_2qokk"), ExtResource("21_hrb51"), ExtResource("22_y6dc6")])
+layer_4 = Array[Texture2D]([ExtResource("23_8j444"), ExtResource("24_latr1"), ExtResource("25_lnoqu"), ExtResource("20_k37lc"), ExtResource("27_8f5b7"), ExtResource("25_4wq02")])
+layer_5 = Array[Texture2D]([ExtResource("28_w8wxn"), ExtResource("29_2uijc"), ExtResource("30_cveju")])
+wait = 0.5
+
+[node name="NMKR" type="Node" parent="."]
+script = ExtResource("52_ythkj")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LabelCurrent" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -205.0
+offset_top = -91.0
+offset_right = 205.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 32
+text = "1 / 1"
+horizontal_alignment = 1

@@ -1,16 +1,41 @@
-[gd_scene load_steps=6 format=3 uid="uid://dbu87tbffr3nb"]
+[gd_scene load_steps=21 format=3 uid="uid://dbu87tbffr3nb"]
 
 [ext_resource type="Script" path="res://scenes/audio_manager/audio_manager.gd" id="1_8g5pf"]
-[ext_resource type="AudioStream" uid="uid://bm3iq65vnumej" path="res://scenes/audio_manager/bgm/snakegame.mp3" id="2_bd8vj"]
+[ext_resource type="AudioStream" uid="uid://54l8ub402xup" path="res://scenes/audio_manager/bgm/menu.mp3" id="2_b5rvd"]
+[ext_resource type="AudioStream" uid="uid://g34erhn7a37l" path="res://scenes/audio_manager/bgm/credits.mp3" id="3_07lb8"]
 [ext_resource type="AudioStream" uid="uid://byjtjhg77gc7x" path="res://scenes/audio_manager/sfx/button_hover.wav" id="3_080iq"]
-[ext_resource type="AudioStream" uid="uid://djuanhwu1uvf7" path="res://scenes/audio_manager/sfx/sfx_button_pressed.wav" id="4_3ylye"]
+[ext_resource type="AudioStream" uid="uid://d2k33xg6b12td" path="res://scenes/audio_manager/bgm/game.mp3" id="3_qya3v"]
+[ext_resource type="AudioStream" uid="uid://djuanhwu1uvf7" path="res://scenes/audio_manager/sfx/button_pressed.wav" id="4_3ylye"]
 [ext_resource type="AudioStream" uid="uid://dnabg86oqv73u" path="res://scenes/audio_manager/sfx/asset_selected.wav" id="4_fsp6i"]
+[ext_resource type="AudioStream" uid="uid://diutylcrswh3p" path="res://scenes/audio_manager/sfx/food_eaten.wav" id="6_qsfdq"]
+[ext_resource type="AudioStream" uid="uid://c8oady5w1uwtt" path="res://scenes/audio_manager/sfx/food_spawned.wav" id="7_luoxr"]
+[ext_resource type="AudioStream" uid="uid://doc1wpd5kuaw6" path="res://scenes/audio_manager/sfx/lake_reveal.wav" id="8_dmuhu"]
+[ext_resource type="AudioStream" uid="uid://ch1rihvmbyfkn" path="res://scenes/audio_manager/sfx/level_completed.wav" id="8_ecuvm"]
+[ext_resource type="AudioStream" uid="uid://cerbrtprem8ca" path="res://scenes/audio_manager/sfx/lake_upgraded.wav" id="9_d85ih"]
+[ext_resource type="AudioStream" uid="uid://be0iosqhj4wrb" path="res://scenes/audio_manager/sfx/seagull_scared.wav" id="11_tu6bh"]
+[ext_resource type="AudioStream" uid="uid://dknhsdvcfmmud" path="res://scenes/audio_manager/sfx/snail_crashed.wav" id="12_xxmn2"]
+[ext_resource type="AudioStream" uid="uid://br1cppbvjnbnu" path="res://scenes/audio_manager/sfx/snake_upgraded.wav" id="13_e1w6y"]
+[ext_resource type="AudioStream" uid="uid://7iryva71khtr" path="res://scenes/audio_manager/sfx/spider_death.wav" id="14_kh3dl"]
+[ext_resource type="AudioStream" uid="uid://c4u0n1lna16a0" path="res://scenes/audio_manager/sfx/spider_bite.wav" id="14_w7pe6"]
+[ext_resource type="AudioStream" uid="uid://be6cl18aq5llt" path="res://scenes/audio_manager/sfx/warning.wav" id="15_wv47g"]
+[ext_resource type="AudioStream" uid="uid://dwla7yo5xtt53" path="res://scenes/audio_manager/sfx/water_deployed.wav" id="16_p7dq0"]
+[ext_resource type="AudioStream" uid="uid://cnhcd8sc2qis" path="res://scenes/audio_manager/sfx/water_taken.wav" id="17_87jv2"]
 
 [node name="AudioManager" type="Node"]
 script = ExtResource("1_8g5pf")
 
 [node name="bgm_menu" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("2_bd8vj")
+stream = ExtResource("2_b5rvd")
+bus = &"BGM"
+parameters/looping = true
+
+[node name="bgm_game" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_qya3v")
+bus = &"BGM"
+parameters/looping = true
+
+[node name="bgm_credits" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_07lb8")
 bus = &"BGM"
 parameters/looping = true
 
@@ -24,4 +49,56 @@ bus = &"SFX"
 
 [node name="sfx_asset_selected" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_fsp6i")
+bus = &"SFX"
+
+[node name="sfx_food_eaten" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_qsfdq")
+bus = &"SFX"
+
+[node name="sfx_food_spawned" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_luoxr")
+bus = &"SFX"
+
+[node name="sfx_lake_reveal" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_dmuhu")
+bus = &"SFX"
+
+[node name="sfx_lake_upgraded" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_d85ih")
+bus = &"SFX"
+
+[node name="sfx_level_completed" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_ecuvm")
+bus = &"SFX"
+
+[node name="sfx_seagull_scared" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_tu6bh")
+bus = &"SFX"
+
+[node name="sfx_snail_crashed" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_xxmn2")
+bus = &"SFX"
+
+[node name="sfx_snake_upgraded" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_e1w6y")
+bus = &"SFX"
+
+[node name="sfx_spider_bite" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_w7pe6")
+bus = &"SFX"
+
+[node name="sfx_spider_death" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_kh3dl")
+bus = &"SFX"
+
+[node name="sfx_warning" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("15_wv47g")
+bus = &"SFX"
+
+[node name="sfx_water_deployed" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("16_p7dq0")
+bus = &"SFX"
+
+[node name="sfx_water_taken" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("17_87jv2")
 bus = &"SFX"

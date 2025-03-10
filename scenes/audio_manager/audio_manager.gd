@@ -12,7 +12,7 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta: float) -> void:
+#func _process(delta: floatt) -> void:
 #	pass
 
 
@@ -20,6 +20,8 @@ func audio(title: String, player: AudioStreamPlayer = null) -> AudioStreamPlayer
 	if player == null:
 		if _players.has(title):
 			return _players[title]
+		
+		push_warning("Couldn't find audio: " + title)
 		return null
 	else:
 		_players[title] = player

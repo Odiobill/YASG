@@ -56,6 +56,7 @@ Button/styles/focus = SubResource("StyleBoxEmpty_s0x5y")
 Button/styles/hover = SubResource("StyleBoxFlat_c0lsx")
 Button/styles/normal = SubResource("StyleBoxFlat_v4h5c")
 Button/styles/pressed = SubResource("StyleBoxFlat_shkmq")
+CheckButton/font_sizes/font_size = 12
 HSlider/icons/grabber = ExtResource("2_nn8eq")
 HSlider/icons/grabber_highlight = ExtResource("3_obee1")
 Label/colors/font_outline_color = Color(0, 0, 0, 1)

@@ -33,6 +33,7 @@ func _ready():
 
 
 func die() -> void:
+	AudioManager.audio("sfx_spider_death").play()
 	queue_free()
 
 

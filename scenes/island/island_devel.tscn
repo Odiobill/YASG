@@ -137,6 +137,7 @@ visible = false
 z_index = 2
 scale = Vector2(3, 3)
 texture = ExtResource("5_ygqej")
+duration = 0.25
 
 [node name="Vfx2DFood" parent="." instance=ExtResource("4_57aol")]
 visible = false

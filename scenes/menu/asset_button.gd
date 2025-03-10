@@ -47,6 +47,7 @@ func _ready() -> void:
 func _on_pressed() -> void:
 	ConfigfileHandler.set_value("wallet", "asset", asset, false)
 	
+	AudioManager.audio("bgm_menu").stop()
 	get_tree().change_scene_to_packed(game_scene)
 
 

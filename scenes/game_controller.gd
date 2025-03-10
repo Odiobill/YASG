@@ -90,6 +90,8 @@ var _game_ended := false
 @onready var label_lakes: Label = $CanvasLayer/ControlUI/LabelLakes
 @onready var color_rect: ColorRect = $CanvasLayer/ColorRect
 @onready var vfx_death_snail: Vfx2D = $VfxDeathSnail
+@onready var panel_pause: Panel = $CanvasLayer/PanelPause
+@onready var check_button_full_screen: CheckButton = $CanvasLayer/PanelPause/MarginContainer/VBoxContainer/CheckButtonFullScreen
 
 
 var max_health: float:
@@ -123,6 +125,7 @@ var show_ui: bool:
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	color_rect.visible = false
+	panel_pause.hide()
 	
 	var asset = ConfigfileHandler.get_value("wallet", "asset")
 	if asset:
@@ -150,6 +153,7 @@ func _ready() -> void:
 	
 	follow_camera.target = snake.head
 	
+	AudioManager.audio("bgm_game").play()
 	level_intro(1)
 	#for i in range(1, 6):
 		#for coords in terrain.levels[i]:
@@ -166,7 +170,10 @@ func _process(delta: float) -> void:
 			return
 		
 		if Input.is_action_pressed("fire"):
-			next_scene(SCENE_CREDITS if _level == 6 else SCENE_MENU, Color.BLACK)
+			if _level > 5:
+				next_scene(SCENE_CREDITS, Color.WHITE)
+			else:
+				next_scene(SCENE_MENU, Color.BLACK)
 		
 		return
 	
@@ -180,6 +187,12 @@ func _process(delta: float) -> void:
 		_game_over("YOU RUN OUT OF WATER")
 	
 	if _game_ended:
+		return
+	
+	if Input.is_action_just_pressed("pause"):
+		toggle_pause()
+	
+	if panel_pause.visible:
 		return
 	
 	var mins := "%02d" % int((level_max_time - _level_time) / 60)
@@ -205,13 +218,27 @@ func _process(delta: float) -> void:
 		_respawn_fishes()
 
 
+func toggle_pause():
+	if panel_pause.visible:
+		panel_pause.hide()
+		Engine.time_scale = 1.0
+	else:
+		panel_pause.show()
+		if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
+			check_button_full_screen.button_pressed = true
+		
+		Engine.time_scale = 0.0
+
+
 func next_scene(path: String, color: Color) -> void:
 	color_rect.color = Color.TRANSPARENT
 	color_rect.visible = true
+	AudioManager.audio("bgm_game").stop()
+	
 	var tween := get_tree().create_tween()
 	tween.set_ease(Tween.EASE_IN)
 	tween.tween_property(color_rect, "color", color, 1.0)
-
+	
 	await get_tree().create_timer(1.5).timeout
 	get_tree().change_scene_to_file(path)
 
@@ -224,7 +251,6 @@ func update_values(asset: Dictionary) -> void:
 		match skill:
 			"skin":
 				snake.skin = asset["snake"][skill]
-				print("skin: " + str(snake.skin))
 			
 			"steering_angle":
 				steering_angle += steering_angle_maxdiff * asset["snake"][skill]
@@ -332,6 +358,7 @@ func _level_intro(level: int, animal: String = "", hint: String = "") -> void:
 	await get_tree().create_timer(1.0).timeout
 	
 	if level > 5:
+		terrain.level = level
 		_game_over("CONGRATULATIONS, ISLAND RESTORED")
 		return
 	
@@ -498,6 +525,7 @@ func _snail_crashed(snail: SteeringAgent) -> void:
 	
 	vfx_death_snail.global_position = snail.global_position
 	vfx_death_snail.play()
+	AudioManager.audio("sfx_snail_crashed").play()
 	snail.queue_free()
 
 
@@ -507,12 +535,15 @@ func _snail_sleeping(snail: Snail) -> void:
 			_spawn_spider(snail)
 			vfx_death_snail.global_position = snail.global_position
 			vfx_death_snail.play()
+			AudioManager.audio("sfx_snail_crashed").play()
 			snail.die()
 		elif _level == spider_spawn_hard_level and randf_range(0.0, 1.0) < spider_spawn_hard_chance:
 			_spawn_spider(snail)
 
 
 func _food_spawned(food: Consumable) -> void:
+	AudioManager.audio("sfx_food_spawned").play()
+	
 	if _level >= spider_spawn_light_level:
 		_spawn_snail(food)
 
@@ -529,10 +560,14 @@ func _food_eaten(value: float) -> void:
 			follow_camera.zoom_out(0.7, 0.7)
 		
 		bar_health.value = max_health
+		AudioManager.audio("sfx_snake_upgraded").play()
+	else:
+		AudioManager.audio("sfx_food_eaten").play()
 
 
 func _bite_received() -> void:
 	health -= collision_drain
+	AudioManager.audio("sfx_spider_bite").play()
 
 
 func _lake_completed() -> void:
@@ -541,4 +576,23 @@ func _lake_completed() -> void:
 
 
 func _level_completed(level: int) -> void:
+	AudioManager.audio("sfx_level_completed").play()
 	level_intro(level + 1)
+
+
+func _on_check_button_full_screen_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		if DisplayServer.window_get_mode() != DisplayServer.WINDOW_MODE_FULLSCREEN:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	else:
+		if DisplayServer.window_get_mode() != DisplayServer.WINDOW_MODE_WINDOWED:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+
+
+func _on_button_resume_pressed() -> void:
+	toggle_pause()
+
+
+func _on_button_quit_pressed() -> void:
+	toggle_pause()
+	next_scene(SCENE_MENU, Color.BLACK)

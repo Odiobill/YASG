@@ -31,6 +31,7 @@ AudioManager="*res://scenes/audio_manager/audio_manager.tscn"
 
 window/size/viewport_width=960
 window/size/viewport_height=540
+window/stretch/mode="viewport"
 
 [editor_plugins]
 
@@ -61,12 +62,17 @@ fire={
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":32,"key_label":0,"unicode":32,"location":0,"echo":false,"script":null)
 ]
 }
+pause={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":80,"key_label":0,"unicode":112,"location":0,"echo":false,"script":null)
+]
+}
 
 [nmkr]
 
-config/global/base_url="https://studio-api.nmkr.io"
-config/global/api_keys=PackedStringArray()
-config/global/debug=false
+config/global/base_url="https://rookiez.org/nmkr"
+config/global/api_keys=PackedStringArray("6fe1d4fb7c1846a3aecfb63937672cc8")
+config/global/debug=true
 
 [physics]
 
@@ -75,6 +81,8 @@ config/global/debug=false
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+textures/lossless_compression/force_png=true
 environment/defaults/default_clear_color=Color(0, 0, 0, 1)

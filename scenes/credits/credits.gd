@@ -20,6 +20,7 @@ func _ready() -> void:
 		push_error("Target node is not set! Assign a Control node (like RichTextLabel).")
 		return
 	
+	AudioManager.audio("bgm_credits").play()
 	_tween = get_tree().create_tween()
 	_tween.set_ease(Tween.EASE_IN)
 	_tween.tween_property(color_rect, "color", Color.TRANSPARENT, fade_time)
@@ -42,13 +43,15 @@ func _process(delta: float) -> void:
 		#return
 	
 	if Input.is_action_pressed("fire"):
+		AudioManager.audio("bgm_credits").stop()
+		
 		_tween = get_tree().create_tween()
 		_tween.set_ease(Tween.EASE_IN)
 		_tween.tween_property(color_rect, "color", fade_color, fade_time)
 		_tween.finished.connect(func():
 			get_tree().change_scene_to_packed(next_scene)
 		)
-
+	
 	_text_position -= scroll_speed * delta
 	if target_node:
 		target_node.set_position(Vector2(target_node.position.x, _text_position))

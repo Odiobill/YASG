@@ -21,6 +21,7 @@ const FRAME_LANDING := Vector2i(0, 2)
 @export var angle_change_range: float = 0.2
 @export var eat_amount: float = 8.0
 @export_range(0.0, 1.0) var eat_until: float = 0.7
+@export_range(0.0, 1.0) var scream_chance: float = 0.5
 var _flap_frames: PackedVector2Array
 var _walk_frames: PackedVector2Array
 var _peck_frames: PackedVector2Array
@@ -28,6 +29,7 @@ var _target_consumable: Consumable
 var _land_position: Vector2
 var _spider: Spider = null
 @onready var vfx_death_spider: Vfx2D = $VfxDeathSpider
+@onready var audio_stream: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
 
 # Called when the node enters the scene tree for the first time.
@@ -68,7 +70,8 @@ func _get_steering() -> Vector2:
 			return Vector2.ZERO
 		
 		State.HUNTING:
-			return arrive_to(_spider.global_position, 32)
+			if is_instance_valid(_spider):
+				return arrive_to(_spider.global_position, 32)
 	
 	return Vector2.ZERO
 
@@ -97,9 +100,15 @@ func _process_state(state: State, _wait_time: float) -> void:
 						_land_position = get_position_at_radius(consumable_land_distance) + _target_consumable.global_position
 						_to_state(State.LANDING)
 					else:
-						activity(3.0 + randf_range(-0.5, 0.5))
+						if randf_range(0.0, 1.0) < scream_chance:
+							audio_stream.play()
+						
+						activity(4.0 + randf_range(-0.5, 0.5))
 				else:
-					activity(3.0 + randf_range(-0.5, 0.5))
+					if randf_range(0.0, 1.0) < scream_chance:
+						audio_stream.play()
+					
+					activity(4.0 + randf_range(-0.5, 0.5))
 		
 		State.LANDING:
 			if global_position.distance_to(_land_position) <= 48.0:
@@ -119,6 +128,7 @@ func _process_state(state: State, _wait_time: float) -> void:
 					if is_instance_valid(node) and node is SnakeHead:
 						reacheable.append(node)
 				if reacheable.size() > 0:
+					AudioManager.audio("sfx_seagull_scared").play()
 					_to_state(State.FLIGHT)
 					return
 			
@@ -132,11 +142,14 @@ func _process_state(state: State, _wait_time: float) -> void:
 					_to_state(State.FLIGHT)
 		
 		State.HUNTING:
-			if global_position.distance_to(_spider.global_position) < 48:
-				vfx_death_spider.global_position = _spider.global_position
-				vfx_death_spider.play()
-				_spider.die()
-				_spider = null
+			if is_instance_valid(_spider):
+				if global_position.distance_to(_spider.global_position) < 48:
+					vfx_death_spider.global_position = _spider.global_position
+					vfx_death_spider.play()
+					_spider.die()
+					_spider = null
+					_to_state(State.FLIGHT)
+			else:
 				_to_state(State.FLIGHT)
 
 

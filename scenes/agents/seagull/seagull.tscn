@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://h6sqy6mxp4bs"]
+[gd_scene load_steps=7 format=3 uid="uid://h6sqy6mxp4bs"]
 
 [ext_resource type="Script" path="res://scenes/agents/seagull/seagull.gd" id="1_4y60v"]
 [ext_resource type="Texture2D" uid="uid://bd71hgf6cxs02" path="res://scenes/agents/seagull/seagull.png" id="2_k1vjk"]
 [ext_resource type="PackedScene" uid="uid://ug2cgqqtfs3s" path="res://scenes/vfx_2d/vfx_2d.tscn" id="3_wjmun"]
 [ext_resource type="Texture2D" uid="uid://i5m6ajo00mkg" path="res://scenes/agents/spider/explosion.png" id="4_13dyj"]
+[ext_resource type="AudioStream" uid="uid://ki22mf2sg65l" path="res://scenes/audio_manager/sfx/seagull_flying.wav" id="5_6mog1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_v00bq"]
 radius = 16.0
@@ -17,6 +18,7 @@ origin_position = Vector2(480, 270)
 constrain_radius = 1024.0
 eat_amount = 5.0
 eat_until = 0.35
+scream_chance = 0.2
 max_speed = 700.0
 metadata/crab_fears = true
 
@@ -31,3 +33,7 @@ shape = SubResource("CircleShape2D_v00bq")
 
 [node name="VfxDeathSpider" parent="." instance=ExtResource("3_wjmun")]
 texture = ExtResource("4_13dyj")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_6mog1")
+bus = &"SFX"

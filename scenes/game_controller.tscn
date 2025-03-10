@@ -33,7 +33,7 @@ part_size = 200.0
 part_capacity = 100.0
 snake = NodePath("Snake")
 steering_angle = 20.0
-steering_angle_maxdiff = 15.0
+steering_angle_maxdiff = 10.0
 collect_amount = 300.0
 collect_amount_maxdiff = 200.0
 fill_amount = 3.0
@@ -229,6 +229,52 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="PanelPause" type="Panel" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelPause"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -102.0
+offset_top = -94.5
+offset_right = 102.0
+offset_bottom = 94.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("9_171ae")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelPause/MarginContainer"]
+layout_mode = 2
+
+[node name="CheckButtonFullScreen" type="CheckButton" parent="CanvasLayer/PanelPause/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "FULL SCREEN"
+
+[node name="ControlResume" type="Control" parent="CanvasLayer/PanelPause/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="ButtonResume" type="Button" parent="CanvasLayer/PanelPause/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "RESUME"
+
+[node name="ControlQuit" type="Control" parent="CanvasLayer/PanelPause/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+
+[node name="ButtonQuit" type="Button" parent="CanvasLayer/PanelPause/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "QUIT"
+
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(3950, 0)
 
@@ -239,3 +285,7 @@ speed = 10.0
 
 [node name="VfxDeathSnail" parent="." instance=ExtResource("13_lwxj2")]
 texture = ExtResource("14_yc3jt")
+
+[connection signal="toggled" from="CanvasLayer/PanelPause/MarginContainer/VBoxContainer/CheckButtonFullScreen" to="." method="_on_check_button_full_screen_toggled"]
+[connection signal="pressed" from="CanvasLayer/PanelPause/MarginContainer/VBoxContainer/ButtonResume" to="." method="_on_button_resume_pressed"]
+[connection signal="pressed" from="CanvasLayer/PanelPause/MarginContainer/VBoxContainer/ButtonQuit" to="." method="_on_button_quit_pressed"]

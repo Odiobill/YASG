@@ -39,6 +39,7 @@ var _volumeSfx: float
 @onready var panel_confirm: Panel = $PanelConfirm
 @onready var panel_settings: Panel = $PanelSettings
 @onready var panel_verify: Panel = $PanelVerify
+@onready var panel_error: Panel = $PanelError
 @onready var panel_click_shield: Panel = $PanelClickShield
 @onready var button_settings: Button = $VBoxContainer/ButtonSettings
 @onready var button_close_settings: Button = $PanelSettings/VBoxContainer/HBoxContainerSettings/ButtonCloseSettings
@@ -54,6 +55,7 @@ var _volumeSfx: float
 @onready var h_slider_master: HSlider = $PanelSettings/VBoxContainer/HBoxContainerSettings/HSliderMaster
 @onready var h_slider_music: HSlider = $PanelSettings/VBoxContainer/HBoxContainerSettings/HSliderMusic
 @onready var h_slider_effects: HSlider = $PanelSettings/VBoxContainer/HBoxContainerSettings/HSliderEffects
+@onready var check_button_full_screen: CheckButton = $CheckButtonFullScreen
 
 
 # Called when the node enters the scene tree for the first time.
@@ -65,19 +67,23 @@ func _ready() -> void:
 	_volumeSfx = ConfigfileHandler.get_value("audio", "volume_sfx")
 	h_slider_effects.value = _volumeSfx
 	
+	check_button_full_screen.button_pressed = DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN 
+	
 	color_rect.visible = true
 	color_rect.color = Color.BLACK
 	var label_position := label_title.position
 	label_title.position.y -= title_distance
 	panel_click_shield.visible = false
 	
-	AudioManager.bus_volume("bgm", 0.1)
+	#AudioManager.bus_volume("bgm", 0.1)
 	_verification_timer = Timer.new()
 	_verification_timer.autostart = false
 	_verification_timer.one_shot = true
 	_verification_timer.timeout.connect(_on_verification_timer_timeout)
 	add_child(_verification_timer)
-
+	
+	nmkr.error.connect(_on_nmkr_error)
+	
 	_update_verify_button()
 	
 	panel_settings.visible = false
@@ -101,6 +107,7 @@ func _ready() -> void:
 	tween.set_ease(Tween.EASE_OUT)
 	tween.tween_property(label_title, "position", label_position, 1.0)
 	tween.finished.connect(func(): AudioManager.audio("bgm_menu").play())
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -132,7 +139,6 @@ func get_snake_stats(asset: Dictionary) -> Dictionary:
 	if asset["policyId"] == asset_box.CHANG_P_ID:
 		stats["steering_angle"] = 0.5
 		stats["wander_drain"] = 0.5
-		stats["shot_drain"] = 0.5
 		stats["skin"] = 2
 	elif asset["policyId"] == asset_box.SNEK_P_ID:
 		stats["skin"] = 0
@@ -184,6 +190,9 @@ func _update_wallet() -> void:
 		
 		var assets := await nmkr.get_all_assets_in_wallet(_config_wallet)
 		for asset in assets:
+			if not asset.has("assetName"):
+				continue
+			
 			var hex := _string_to_hex(asset["assetName"])
 			asset["policyId"] = asset["unit"].left(asset["unit"].length() - hex.length())
 			
@@ -199,6 +208,7 @@ func _update_wallet() -> void:
 					if foundChang:
 						continue
 					foundChang = true
+					#print(asset)
 				
 				asset["snake"] = get_snake_stats(asset)
 				
@@ -218,6 +228,17 @@ func _update_wallet() -> void:
 
 func _handle_asset_selected(asset: Dictionary) -> void:
 	asset_box.asset = asset
+
+
+func _quit() -> void:
+	AudioManager.audio("bgm_menu").stop()
+	color_rect.visible = true
+	var tween := get_tree().create_tween()
+	tween.set_ease(Tween.EASE_IN)
+	tween.tween_property(color_rect, "color", Color.BLACK, 1.0)
+	tween.finished.connect(func():
+		get_tree().quit()
+	)
 
 
 func _handle_verify_button() -> void:
@@ -272,16 +293,7 @@ func _on_button_quit_pressed() -> void:
 	var result := await confirm()
 	
 	if result:
-		AudioManager.audio("bgm_menu").stop()
-		color_rect.visible = true
-		var tween := get_tree().create_tween()
-		tween.set_ease(Tween.EASE_IN)
-		tween.tween_property(color_rect, "color", Color.BLACK, 1.0)
-		tween.finished.connect(func():
-			get_tree().quit()
-		)
-	else:
-		print("Cancel")
+		_quit()
 
 
 func _on_button_address_pressed() -> void:
@@ -355,3 +367,22 @@ func _on_button_close_settings_pressed() -> void:
 	ConfigfileHandler.set_value("audio", "volume_sfx", _volumeSfx)
 	
 	panel_settings.visible = false
+
+
+func _on_check_button_full_screen_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		if DisplayServer.window_get_mode() != DisplayServer.WINDOW_MODE_FULLSCREEN:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	else:
+		if DisplayServer.window_get_mode() != DisplayServer.WINDOW_MODE_WINDOWED:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+
+
+func _on_nmkr_error(error) -> void:
+	push_error(error)
+	panel_click_shield.show()
+	panel_error.show()
+
+
+func _on_button_error_pressed() -> void:
+	_quit()

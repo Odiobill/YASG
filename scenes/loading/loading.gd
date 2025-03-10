@@ -57,7 +57,6 @@ func _on_button_game_pressed() -> void:
 	_tween_panel.set_ease(Tween.EASE_OUT_IN)
 	_tween_panel.tween_property(_style_panel, "bg_color", Color.BLACK, 1.0)
 	_tween_panel.finished.connect(func(): get_tree().change_scene_to_packed(next_scene))
-	print("Load Game")
 
 
 func _on_button_mint_pressed() -> void:

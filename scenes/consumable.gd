@@ -93,7 +93,7 @@ func _on_timer_timeout() -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if body is SnakeHead:
 		catched.emit(self)
-	elif body is Snail:
+	elif body is Snail and _expire_timer:
 		if _expire_timer.time_left > 0:
 			_expire_timer.stop()
 			_expire_timer.timeout.emit()

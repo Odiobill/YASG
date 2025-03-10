@@ -178,6 +178,21 @@ pressed_sound = "sfx_button_pressed"
 custom_minimum_size = Vector2(0, 8)
 layout_mode = 2
 
+[node name="CheckButtonFullScreen" type="CheckButton" parent="."]
+custom_minimum_size = Vector2(192, 0)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -167.0
+offset_top = -41.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "FULL SCREEN"
+flat = true
+
 [node name="PanelClickShield" type="Panel" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -186,6 +201,60 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_uprgl")
+
+[node name="PanelError" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -192.0
+offset_right = 256.0
+offset_bottom = 192.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelError"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 32
+
+[node name="LabelTitle" type="Label" parent="PanelError/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "SERVER ERROR"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelDescription" type="Label" parent="PanelError/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "COULD NOT CONNECT TO THE
+NMKR API SERVER.
+PLEASE TRY AGAIN LATER."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelError/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 64
+alignment = 1
+
+[node name="ButtonError" type="Button" parent="PanelError/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "QUIT
+"
+
+[node name="SoundEffects" parent="PanelError/VBoxContainer/HBoxContainer/ButtonError" instance=ExtResource("14_ik4x5")]
+focus_entered_sound = "sfx_button_hover"
+pressed_sound = "sfx_button_pressed"
 
 [node name="PanelConfirm" type="Panel" parent="."]
 visible = false
@@ -351,10 +420,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = -250.0
-offset_right = 300.0
-offset_bottom = 250.0
+offset_left = -320.0
+offset_top = -256.0
+offset_right = 320.0
+offset_bottom = 256.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -510,6 +579,9 @@ color = Color(0, 0, 0, 1)
 [connection signal="pressed" from="VBoxContainer/ButtonVerify" to="." method="_on_button_verify_pressed"]
 [connection signal="mouse_entered" from="VBoxContainer/ButtonQuit" to="." method="_on_button_quit_mouse_entered"]
 [connection signal="pressed" from="VBoxContainer/ButtonQuit" to="." method="_on_button_quit_pressed"]
+[connection signal="toggled" from="CheckButtonFullScreen" to="." method="_on_check_button_full_screen_toggled"]
+[connection signal="mouse_entered" from="PanelError/VBoxContainer/HBoxContainer/ButtonError" to="." method="_on_button_yes_mouse_entered"]
+[connection signal="pressed" from="PanelError/VBoxContainer/HBoxContainer/ButtonError" to="." method="_on_button_error_pressed"]
 [connection signal="mouse_entered" from="PanelConfirm/VBoxContainer/HBoxContainer/ButtonYes" to="." method="_on_button_yes_mouse_entered"]
 [connection signal="pressed" from="PanelConfirm/VBoxContainer/HBoxContainer/ButtonYes" to="." method="_on_button_yes_pressed"]
 [connection signal="mouse_entered" from="PanelConfirm/VBoxContainer/HBoxContainer/ButtonNo" to="." method="_on_button_no_mouse_entered"]

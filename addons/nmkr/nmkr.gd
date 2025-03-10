@@ -1,14 +1,17 @@
 @tool
 class_name NMKR extends Node
 
-## A Godot plugin that is a wrapper of the NMKR API to create more integrated minting experiences.
+## A Godot plugin for accessing the NMKR Studio API
 ##
-## The [b]NMKR SDK for Godot[/b] addresses the need for seamless integration of Cardano's NFT
-## capabilities in the gaming industry, particularly targeting indie game developers using Godot.
+## The [b]NMKR SDK for Godot[/b] addresses the need for seamless integration of NFTs and other
+## blockchain capabilities in the gaming industry, particularly targeting indie game developers
+## using Godot.
 ## [br][br]
-## By developing a Godot plugin for NMKR's NFT minting API, we facilitate easier Cardano adoption,
+## By developing a Godot plugin for NMKR's NFT minting API, we facilitate easier Web3 adoption,
 ## potentially increasing both the number of NFTs minted and the transactions within the Cardano
-## network. With this tool, we aim to attract new developers and users to the Cardano ecosystem,
+## network, with other blockchains being on the NMKR roadmap, starting with Solana.
+## [br][br]
+## With this tool, we aim to attract new developers and users to the blockchain ecosystem,
 ## broadening its user base, while facilitating the implementation of NFT technology for the game
 ## developers who are adopting different revenue models.
 ## [br][br]
@@ -77,6 +80,7 @@ class_name NMKR extends Node
 
 # General
 signal completed(result)
+signal error(result)
 # Customer
 signal add_payout_wallet_completed(result: Dictionary)
 signal get_customer_transactions_completed(result: Array)
@@ -111,6 +115,7 @@ signal get_cardano_token_registry_information_completed(result: Dictionary)
 signal get_metadata_for_token_completed(result: Dictionary)
 signal get_policy_snapshot_completed(result: Dictionary)
 signal get_preview_image_for_token_completed(result: Dictionary)
+signal get_rates_completed(result: Dictionary)
 signal get_royalty_information_completed(result: Dictionary)
 signal get_solana_rates_completed(result: Dictionary)
 # Wallet validation
@@ -160,7 +165,7 @@ signal get_nmkr_pay_link_completed(result: Dictionary)
 signal get_nmkr_pay_status_completed(result: Dictionary)
 # Misc
 signal get_public_mints_completed(result: Dictionary)
-signal get_server_state_completed(result: Dictionary)
+signal get_server_state_completed(result: Array)
 # Whitelists
 signal manage_whitelist_completed(result: Dictionary)
 # Mint
@@ -270,7 +275,7 @@ func get_customer_transactions(customerid: int = 0, optional := {}) -> Array:
 		_request(url if optional.size() == 0 else _get_valid_url(url, optional), sig)
 	
 	await sig
-	return result
+	return result if result is Array else [ result ]
 
 
 ## Returns the count of mint coupons in your account
@@ -298,7 +303,7 @@ func get_payout_wallets() -> Array:
 		_request(url, sig)
 	
 	await sig
-	return result
+	return result if result is Array else [ result ]
 
 
 # NFT
@@ -428,10 +433,7 @@ func get_nfts(projectuid := "", state := "", count: int = 0, page: int = -1, opt
 		_request(url if optional.size() == 0 else _get_valid_url(url, optional), sig)
 	
 	await sig
-	
-	if _result is not Array:
-		_result = [ _result ]
-	return result
+	return result if result is Array else [ result ]
 
 
 ## With this API you can update the Metadata Override for one specific NFT If you leave the field blank, the Metadata override will be deleted and the Metadata from the project will be used.
@@ -460,7 +462,7 @@ func upload_nft(projectuid := "", data := {}, optional := {}) -> Dictionary:
 		_trigger_error(sig, SdkError.INVALID_PARAMETERS)
 	else:
 		var url := _base_url + "/v2/UploadNft/" + projectuid
-		_request(url if optional.size() == 0 else _get_valid_url(url, optional), sig)
+		_request(url if optional.size() == 0 else _get_valid_url(url, optional), sig, data)
 	
 	await sig
 	return result
@@ -655,7 +657,7 @@ func get_all_assets_in_wallet(address := "") -> Array:
 		_request(url, sig)
 	
 	await sig
-	return result
+	return result if result is Array else [ result ]
 
 
 ## Returns the quantity of a specific token in a wallet. Leave the "address" field as an empty
@@ -740,6 +742,22 @@ func get_preview_image_for_token(policyid := "", tokennamehex := "") -> Dictiona
 		_trigger_error(sig, SdkError.INVALID_PARAMETERS)
 	else:
 		var url := _base_url + "/v2/GetPreviewImageForToken/" + policyid + "/" + tokennamehex
+		_request(url, sig)
+	
+	await sig
+	return result
+
+
+## Returns the actual price in EUR and USD for ADA, APT, SOL, ETH, etc.
+func get_rates(coin := "ADA") -> Dictionary:
+	var sig := get_rates_completed
+	
+	if current_key < 0:
+		_trigger_error(sig, SdkError.INVALID_KEY)
+	elif coin == "":
+		_trigger_error(sig, SdkError.INVALID_PARAMETERS)
+	else:
+		var url := _base_url + "/v2/GetRates?coin=" + coin
 		_request(url, sig)
 	
 	await sig
@@ -859,7 +877,7 @@ func get_all_auctions(customerid := "") -> Array:
 		_request(url, sig)
 	
 	await sig
-	return result
+	return result if result is Array else [ result ]
 
 
 ## Returns the state - and the last bids of a auction project
@@ -957,7 +975,7 @@ func get_discounts(projectuid := "") -> Array:
 		_request(url, sig)
 	
 	await sig
-	return result
+	return result if result is Array else [ result ]
 
 
 ## Returns information about the identities (if the identity token was created) of a project
@@ -989,7 +1007,7 @@ func get_notifications(projectuid := "") -> Array:
 		_request(url, sig)
 	
 	await sig
-	return result
+	return result if result is Array else [ result ]
 
 
 ## You will get the predefined prices for one or more NFTs
@@ -1037,7 +1055,7 @@ func get_project_transactions(projectuid := "", optional := {}) -> Array:
 		_request(url if optional.size() == 0 else _get_valid_url(url, optional), sig)
 	
 	await sig
-	return result
+	return result if result is Array else [ result ]
 
 
 ## Returns all refunds of a project
@@ -1053,7 +1071,7 @@ func get_refunds(projectuid := "", optional := {}) -> Array:
 		_request(url if optional.size() == 0 else _get_valid_url(url, optional), sig)
 	
 	await sig
-	return result
+	return result if result is Array else [ result ]
 
 
 ## If you call this funtion, you will get all active saleconditions for this project
@@ -1069,7 +1087,7 @@ func get_sale_conditions(projectuid := "") -> Array:
 		_request(url, sig)
 	
 	await sig
-	return result
+	return result if result is Array else [ result ]
 
 
 ## You will receive a list with all of your projects.[br]
@@ -1088,7 +1106,7 @@ func list_projects(count: int = 0, page: int = 0, optional := {}) -> Array:
 		_request(url if optional.size() == 0 else _get_valid_url(url, optional), sig)
 	
 	await sig
-	return result
+	return result if result is Array else [ result ]
 
 
 ## With this Controller you can update the discounts of a project. All old entries will be deleted. If you want to clear the discounts, just send an empty array
@@ -1186,7 +1204,7 @@ func get_split_addresses(customerid: int = 0) -> Array:
 		_request(url, sig)
 	
 	await sig
-	return result
+	return result if result is Array else [ result ]
 
 
 ## Updates a split address
@@ -1252,7 +1270,7 @@ func get_vesting_addresses(customerid: int = 0) -> Array:
 		_request(url, sig)
 	
 	await sig
-	return result
+	return result if result is Array else [ result ]
 
 
 # Managed Wallets
@@ -1334,7 +1352,7 @@ func list_all_wallets(customerid: int = 0) -> Array:
 		_request(url, sig)
 	
 	await sig
-	return result
+	return result if result is Array else [ result ]
 
 
 ## Makes a transaction on a managed Wallet
@@ -1418,7 +1436,7 @@ func get_public_mints() -> Dictionary:
 	return result
 
 
-func get_server_state() -> Dictionary:
+func get_server_state() -> Array:
 	var sig := get_server_state_completed
 	
 	if current_key < 0:
@@ -1428,7 +1446,7 @@ func get_server_state() -> Dictionary:
 		_request(url, sig)
 	
 	await sig
-	return result
+	return result if result is Array else [ result ]
 
 
 # Whitelists
@@ -1607,10 +1625,6 @@ func _on_completed(res: int, code: int, _h: PackedStringArray, body: PackedByteA
 	if res == HTTPRequest.RESULT_SUCCESS and code == HTTPClient.RESPONSE_OK:
 		if text.length() == 0:
 			text = "{\"completed\": true}"
-		
-		if _debug:
-			DisplayServer.clipboard_set(text)
-		
 		Engine.print_error_messages = false
 		_result = JSON.parse_string(text)
 		Engine.print_error_messages = true
@@ -1623,6 +1637,7 @@ func _on_completed(res: int, code: int, _h: PackedStringArray, body: PackedByteA
 			"code": code,
 			"body": text,
 		}
+		error.emit(_result)
 		
 		if _debug:
 			push_warning(_result)
