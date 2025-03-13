@@ -136,15 +136,29 @@ func confirm() -> bool:
 func get_snake_stats(asset: Dictionary) -> Dictionary:
 	var stats: Dictionary = {}
 	
-	if asset["policyId"] == asset_box.CHANG_P_ID:
-		stats["steering_angle"] = 0.5
-		stats["wander_drain"] = 0.5
-		stats["skin"] = 2
-	elif asset["policyId"] == asset_box.SNEK_P_ID:
+	if asset["policyId"] == asset_box.SNEK_P_ID:
 		stats["skin"] = 0
 	elif asset["policyId"] == asset_box.VIPER_P_ID:
 		stats["skin"] = 1
-	
+	elif asset["policyId"] == asset_box.SNAKE_P_ID:
+		var nft_number := int(asset["assetName"].right(5))
+		stats["serial"] = nft_number
+		stats["skin"] = _skin_index(nft_number) + 2
+		var metadata: Dictionary = asset["metadata"]["721"][asset["policyId"]][asset["assetName"]]
+		for key in metadata.keys():
+			if key in [
+				"collect_amount",
+				"collision_drain",
+				"dry_resistance",
+				"fill_amount",
+				"food_growth",
+				"food_health",
+				"steering_angle",
+				"wander_drain",
+				"wander_power",
+			]:
+				stats[key] = float(metadata[key])
+
 	return stats
 
 
@@ -176,6 +190,21 @@ func _update_verify_button() -> void:
 		button_verify.text = "VERIFY WALLET"
 
 
+func _skin_index(image_number: int) -> int:
+	var index = image_number - 1
+	var layer_textures = [5, 5, 5, 6, 6, 3]
+	
+	# Calculate the multiplier for the skin layer (Layer 1)
+	var skin_multiplier = 1
+	for i in range(2, layer_textures.size()):
+		skin_multiplier *= layer_textures[i]
+	
+	# Calculate the skin index
+	var skin_index = (index / skin_multiplier) % layer_textures[1]
+	
+	return skin_index
+
+
 func _update_wallet() -> void:
 	if _asset_buttons.size() > 0:
 		for assetButton in _asset_buttons:
@@ -185,7 +214,10 @@ func _update_wallet() -> void:
 	if _config_wallet.length() > 0:
 		label_wallet.text = "LOADING WALLET...\n\nPLEASE WAIT...\n"
 		
-		var foundChang := false
+		var os := OS.get_name()
+		if os in [ "HTML5", "Web" ]:
+			nmkr.accept_gzip = false
+
 		var foundHandle := ""
 		
 		var assets := await nmkr.get_all_assets_in_wallet(_config_wallet)
@@ -201,14 +233,9 @@ func _update_wallet() -> void:
 					continue
 				foundHandle = "$" + asset["assetName"].to_upper().left(14)
 			elif policy_ids.has(asset["policyId"]):
-				if asset["policyId"] not in [ asset_box.SNEK_P_ID, asset_box.VIPER_P_ID, asset_box.CHANG_P_ID ]:
+				if asset["policyId"] not in [ asset_box.SNEK_P_ID, asset_box.VIPER_P_ID ]:
 					var metadata := await nmkr.get_metadata_for_token(asset["policyId"], asset["assetNameInHex"])
 					asset["metadata"] = metadata
-				elif asset["policyId"] == asset_box.CHANG_P_ID:
-					if foundChang:
-						continue
-					foundChang = true
-					#print(asset)
 				
 				asset["snake"] = get_snake_stats(asset)
 				

@@ -1,7 +1,37 @@
-[gd_scene load_steps=3 format=3 uid="uid://dl7aoxqcdvj12"]
+[gd_scene load_steps=33 format=3 uid="uid://dl7aoxqcdvj12"]
 
 [ext_resource type="Script" path="res://scenes/menu/asset_button.gd" id="1_g86up"]
+[ext_resource type="Texture2D" uid="uid://dt4as1qcb20sm" path="res://scenes/nft_generator/layers/1/0.png" id="2_6yjvq"]
+[ext_resource type="Texture2D" uid="uid://b03yenhwqcirb" path="res://scenes/nft_generator/layers/0/0.png" id="2_bid2u"]
 [ext_resource type="PackedScene" uid="uid://dg2noqsa88rfi" path="res://scenes/game_controller.tscn" id="2_txtf3"]
+[ext_resource type="Texture2D" uid="uid://c4ro55y8wjo3y" path="res://scenes/nft_generator/layers/1/1.png" id="3_4g5sk"]
+[ext_resource type="Texture2D" uid="uid://bq5uefpcihkhr" path="res://scenes/nft_generator/layers/0/1.png" id="3_tdx06"]
+[ext_resource type="Texture2D" uid="uid://n1cicrlsms87" path="res://scenes/nft_generator/layers/1/2.png" id="4_65y7h"]
+[ext_resource type="Texture2D" uid="uid://cwh5lkt37ape5" path="res://scenes/nft_generator/layers/0/2.png" id="4_sus2s"]
+[ext_resource type="Texture2D" uid="uid://cym1sft66ym5l" path="res://scenes/nft_generator/layers/1/3.png" id="5_1yj7w"]
+[ext_resource type="Texture2D" uid="uid://c8kv343u2gmhh" path="res://scenes/nft_generator/layers/0/3.png" id="5_genx3"]
+[ext_resource type="Texture2D" uid="uid://c7ml13770icaf" path="res://scenes/nft_generator/layers/0/4.png" id="6_apadg"]
+[ext_resource type="Texture2D" uid="uid://bn06lpjwsaa4" path="res://scenes/nft_generator/layers/1/4.png" id="6_eeqst"]
+[ext_resource type="Texture2D" uid="uid://b6dygffje5wh2" path="res://scenes/nft_generator/layers/2/0.png" id="7_1w7nw"]
+[ext_resource type="Texture2D" uid="uid://dckpprnbasiir" path="res://scenes/nft_generator/layers/2/1.png" id="8_carjg"]
+[ext_resource type="Texture2D" uid="uid://bvgnrwis3pvur" path="res://scenes/nft_generator/layers/2/2.png" id="9_y6kuc"]
+[ext_resource type="Texture2D" uid="uid://dqw2ine5vpm05" path="res://scenes/nft_generator/layers/2/3.png" id="10_7ijmu"]
+[ext_resource type="Texture2D" uid="uid://bghbh5tm0tday" path="res://scenes/nft_generator/layers/2/4.png" id="11_hysay"]
+[ext_resource type="Texture2D" uid="uid://dif4fvsua6yd5" path="res://scenes/nft_generator/layers/3/0.png" id="12_av1kd"]
+[ext_resource type="Texture2D" uid="uid://cm65cdf2ptpkb" path="res://scenes/nft_generator/layers/3/1.png" id="13_cm8j3"]
+[ext_resource type="Texture2D" uid="uid://dhsxdaxcj53mw" path="res://scenes/nft_generator/layers/3/2.png" id="14_swpwt"]
+[ext_resource type="Texture2D" uid="uid://cxmuqf5dij4dj" path="res://scenes/nft_generator/layers/3/3.png" id="15_uaooh"]
+[ext_resource type="Texture2D" uid="uid://cbyexyomaeedj" path="res://scenes/nft_generator/layers/3/4.png" id="16_ffesc"]
+[ext_resource type="Texture2D" uid="uid://dtcwecsufhdj2" path="res://scenes/nft_generator/layers/3/5.png" id="17_w4wfb"]
+[ext_resource type="Texture2D" uid="uid://d174uvfj0ic2r" path="res://scenes/nft_generator/layers/4/0.png" id="18_7qelw"]
+[ext_resource type="Texture2D" uid="uid://c1jm767nupqb7" path="res://scenes/nft_generator/layers/4/1.png" id="19_m45ww"]
+[ext_resource type="Texture2D" uid="uid://bws4h56bo3fj5" path="res://scenes/nft_generator/layers/4/2.png" id="20_1nuym"]
+[ext_resource type="Texture2D" uid="uid://ckghpctkm13br" path="res://scenes/nft_generator/layers/4/3.png" id="21_8fqvx"]
+[ext_resource type="Texture2D" uid="uid://dysm7dupuk40g" path="res://scenes/nft_generator/layers/4/4.png" id="22_ay1f7"]
+[ext_resource type="Texture2D" uid="uid://sdak7e8a37uk" path="res://scenes/nft_generator/layers/4/5.png" id="23_h74cf"]
+[ext_resource type="Texture2D" uid="uid://b2pwoss2d5di4" path="res://scenes/nft_generator/layers/5/0.png" id="24_s0ghf"]
+[ext_resource type="Texture2D" uid="uid://diqpxnaqcvhkc" path="res://scenes/nft_generator/layers/5/1.png" id="25_g6gcy"]
+[ext_resource type="Texture2D" uid="uid://c30c2vgnanyoi" path="res://scenes/nft_generator/layers/5/2.png" id="26_4fp2m"]
 
 [node name="AssetButton" type="Button"]
 custom_minimum_size = Vector2(240, 64)
@@ -12,6 +42,12 @@ text = "NAME"
 flat = true
 alignment = 0
 script = ExtResource("1_g86up")
+layer_0 = Array[Texture2D]([ExtResource("2_bid2u"), ExtResource("3_tdx06"), ExtResource("4_sus2s"), ExtResource("5_genx3"), ExtResource("6_apadg")])
+layer_1 = Array[Texture2D]([ExtResource("2_6yjvq"), ExtResource("3_4g5sk"), ExtResource("4_65y7h"), ExtResource("5_1yj7w"), ExtResource("6_eeqst")])
+layer_2 = Array[Texture2D]([ExtResource("7_1w7nw"), ExtResource("8_carjg"), ExtResource("9_y6kuc"), ExtResource("10_7ijmu"), ExtResource("11_hysay")])
+layer_3 = Array[Texture2D]([ExtResource("12_av1kd"), ExtResource("13_cm8j3"), ExtResource("14_swpwt"), ExtResource("15_uaooh"), ExtResource("16_ffesc"), ExtResource("17_w4wfb")])
+layer_4 = Array[Texture2D]([ExtResource("18_7qelw"), ExtResource("19_m45ww"), ExtResource("20_1nuym"), ExtResource("21_8fqvx"), ExtResource("22_ay1f7"), ExtResource("23_h74cf")])
+layer_5 = Array[Texture2D]([ExtResource("24_s0ghf"), ExtResource("25_g6gcy"), ExtResource("26_4fp2m")])
 game_scene = ExtResource("2_txtf3")
 
 [node name="TextureRect" type="TextureRect" parent="."]

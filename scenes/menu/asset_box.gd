@@ -9,11 +9,7 @@ const SNEK_P_ID := "279c909f348e533da5808898f87f9a14bb2c3dfbbacccd631d927a3f"
 const VIPER_FONT := preload("res://scenes/menu/fonts/TitanOne-Regular.ttf")
 const VIPER_ICON := preload("res://scenes/menu/images/viper.png")
 const VIPER_P_ID := "caff93803e51c7b97bf79146790bfa3feb0d0b856ef16113b391b997"
-
-const CHANG_ICON := preload("res://icon.svg")
-const CHANG_P_ID := "17ac801d2ce81747e038d69bc0ccc861dcaad0d10750df4a3897b66d"
-const CHANG_MULT: float = 200.0
-
+const SNAKE_P_ID := "4b839eb0c2757e3795b181f5884323e163ce2b40d04aab6e04468069"
 const STAR_FULL := preload("res://scenes/menu/images/ui_star_full.png")
 const STAR_EMPTY := preload("res://scenes/menu/images/ui_star_empty.png")
 
@@ -51,11 +47,11 @@ var asset: Dictionary:
 				label_name.add_theme_font_override("font", SNEK_FONT)
 				label_name.add_theme_font_size_override("font_size", 32)
 				label_name.text = "VIPER"
-			elif value.policyId == CHANG_P_ID:
-				texture_rect.texture = CHANG_ICON
+			elif value.policyId == SNAKE_P_ID:
+				texture_rect.texture = value["image"]
 				label_name.remove_theme_font_override("font")
 				label_name.remove_theme_font_size_override("font_size")
-				label_name.text = "CHANG"
+				label_name.text = "YASG " + str(value["snake"]["serial"])
 			
 			efficiency.visible = true
 			agility.visible = true

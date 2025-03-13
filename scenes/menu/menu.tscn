@@ -31,7 +31,7 @@ animation_min_time = 2.0
 animation_max_time = 7.0
 animation_min_speed = 0.05
 animation_max_speed = 0.15
-policy_ids = PackedStringArray("279c909f348e533da5808898f87f9a14bb2c3dfbbacccd631d927a3f", "caff93803e51c7b97bf79146790bfa3feb0d0b856ef16113b391b997", "17ac801d2ce81747e038d69bc0ccc861dcaad0d10750df4a3897b66d")
+policy_ids = PackedStringArray("279c909f348e533da5808898f87f9a14bb2c3dfbbacccd631d927a3f", "caff93803e51c7b97bf79146790bfa3feb0d0b856ef16113b391b997", "4b839eb0c2757e3795b181f5884323e163ce2b40d04aab6e04468069")
 asset_box = NodePath("AssetBox")
 title_distance = 350.0
 

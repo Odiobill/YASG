@@ -70,9 +70,9 @@ pause={
 
 [nmkr]
 
-config/global/base_url="https://rookiez.org/nmkr"
-config/global/api_keys=PackedStringArray("6fe1d4fb7c1846a3aecfb63937672cc8")
+config/global/api_keys=PackedStringArray()
 config/global/debug=true
+config/global/base_url="https://studio-api.nmkr.io"
 
 [physics]
 
@@ -84,5 +84,6 @@ config/global/debug=true
 textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
 textures/lossless_compression/force_png=true
 environment/defaults/default_clear_color=Color(0, 0, 0, 1)

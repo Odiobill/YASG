@@ -63,7 +63,7 @@ func _on_button_mint_pressed() -> void:
 	button_mint.disabled = true
 	var uid: String = ConfigfileHandler.get_value("project", "snake_nft_uid")
 	var nfts := await nmkr.get_counts(uid)
-	if nfts.has("free") and nfts["free"] > 7:
+	if nfts.has("free") and nfts["free"] > 2:
 		var payment_request := {
 			"projectUid": uid,
 			"paymentTransactionType": "nmkr_pay_random",
@@ -76,7 +76,8 @@ func _on_button_mint_pressed() -> void:
 		var payment_transaction := await nmkr.get_nmkr_pay_link(payment_request)
 		if payment_transaction.has("nmkrPayUrl"):
 			var url: String = payment_transaction["nmkrPayUrl"]
-			if OS.get_name() == "HTML5":
+			var os := OS.get_name()
+			if os in [ "HTML5", "Web" ]:
 				JavaScriptBridge.eval("window.open('" + url + "', '_blank').focus()")
 			else:
 				OS.shell_open(url)
